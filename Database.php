@@ -29,6 +29,7 @@ class Database
      * Fetches items from DataBase.
      */
     public static function FetchProducts() {
+        session_start();
 
         $conn = self::PDOConnect();
         $result = $conn->query('SELECT * FROM producten')->fetchAll(PDO::FETCH_ASSOC);
@@ -49,7 +50,14 @@ class Database
         }
     }
 
+    /**
+     * @param $email
+     *  login email
+     * @param $pass
+     *  login password
+     */
     public static function Login($email, $pass) {
+        session_start();
         if(!empty($email) && !empty($pass)){
             $conn = self::PDOConnect();
             $dbquery = $conn->prepare("select * from gebruikers where gebruiker_email=? and gebruiker_wachtwoord=?");
@@ -59,12 +67,25 @@ class Database
 
             if($dbquery->rowCount() == 1){
                 echo "User verified, Access granted.";
+                $_SESSION['login_user'] = $email;
+                header('Location: Home.php');
             }else{
                 echo "Incorrect username or password";
             }
         }else{
-            echo "Logging data is missing. Please enter username and password";
+            echo "Login data is missing. Please enter username and password";
+        }
+    }
 
+    /**
+     * Checks login status
+     */
+    public static function LoginStatus() {
+        session_start();
+        if(isset($_SESSION['login_user'])) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

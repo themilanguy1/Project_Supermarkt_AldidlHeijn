@@ -18,7 +18,17 @@ require_once('Database.php');
                 <h3>Home</h3>
             </div>
             <div class="col-md-4">
-                <a href="Login.php" class="btn btn-primary">Log Hier In, Sukkeltje ;)</a>
+                <?php
+                if(Database::LoginStatus()) {
+                    ?>
+                    <a href="Loguit.php" class="btn btn-primary">Log uit</a>
+                    <?php
+                } else {
+                    ?>
+                    <a href="Login.php" class="btn btn-primary">Login</a>
+                    <?php
+                }
+                ?>
             </div>
             <div class="col-md-12">
                 <br>
