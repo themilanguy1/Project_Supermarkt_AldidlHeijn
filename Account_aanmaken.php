@@ -17,6 +17,7 @@ session_start();
     <div class="container">
         <div class="row">
             <div class="col-md-4">
+                <a href="Login.php" class="btn btn-primary">Log in</a>
                 <a href="Home.php" class="btn btn-primary">Home</a>
             </div>
             <div class="col-md-8">
@@ -24,29 +25,36 @@ session_start();
             </div>
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card-body">
-                    <h5 class="card-title text-center">Log hier in</h5>
+                    <h5 class="card-title text-center">Maak een nieuwe account aan</h5>
                     <form class="form-signin" method="POST">
                         <div class="from-label-group">
-                            <input name="login_email" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+                            <input name="registreer_email" type="email" id="inputEmail" class="form-control" placeholder="Vul uw email adres in" required autofocus>
                             <label for="inputEmail"></label>
                         </div>
 
                         <div class="form-label-group">
-                            <input name="login_wachtwoord" type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord" required>
+                            <input name="registreer_wachtwoord" type="password" id="inputPassword" class="form-control" placeholder="Kies een wachtwoord" required>
                             <label for="inputPassword"></label>
                         </div>
 
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
-                        <br>
-                        <a href="Account_aanmaken.php"><button class="btn btn-lg btn-primary btn-block" type="button">Registreren</button></a>
+                        <div class="form-label-group">
+                            <input name="registreer_wachtwoord_check" type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord herhalen" required>
+                            <label for="inputPassword"></label>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Account aanmaken</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <?php
-    if(isset($_POST['login_email']) & isset($_POST['login_wachtwoord'])) {
-        User::Login($_POST['login_email'], $_POST['login_wachtwoord']);
+    if(isset($_POST['registreer_email']) & isset($_POST['registreer_wachtwoord']) & isset($_POST['registreer_wachtwoord_check'])) {
+        if($_POST['registreer_wachtwoord'] == $_POST['registreer_wachtwoord_check']) {
+            User::Register($_POST['registreer_email'], $_POST['registreer_wachtwoord']);
+        } else {
+            echo "Uw ingevulde wachtwoorden komen niet overeen.";
+        }
     }
     ?>
 </body>

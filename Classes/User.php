@@ -46,11 +46,37 @@ class User
     }
 
     /**
-     * Log user out by destroying current session and redirects back to home page.
+     * Registers new user in database.
      */
-    public static function LogOut() {
+    public static function Register($email, $pass)
+    {
+        if (!empty($email) && !empty($pass)) {
+            $conn = Database::PDOConnect();
+
+            $sql_id = "SELECT MAX(gebruiker_id) FROM gebruikers";
+            $stmt = $conn->prepare($sql_id);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            $new_id = $row['MAX(gebruiker_id)'] + 1;
+
+            $admin_status = 0;
+
+            $sql = "INSERT INTO gebruikers (gebruiker_id, gebruiker_email,gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$new_id, $email, $pass, $admin_status]);
+        } else {
+            echo "Logging data is missing. Please enter username and password";
+
+        }
+    }
+
+    /**
+     * Log user out and redirects to Home.php .
+     */
+    public static function LogOut()
+    {
         session_start();
-        if(User::LoginStatus()) {
+        if (User::LoginStatus()) {
             session_destroy();
             header('Location: Home.php');
         } else {
@@ -63,7 +89,8 @@ class User
      *
      * Checks login status.
      */
-    public static function LoginStatus() {
+    public static function LoginStatus()
+    {
         if (isset($_SESSION['login_user'])) {
             return true;
         } else {
@@ -77,9 +104,10 @@ class User
      * Checks admin status.
      *
      */
-    public static function AdminStatus() {
+    public static function AdminStatus()
+    {
         if (isset($_SESSION['login_admin_status'])) {
-            if($_SESSION['login_admin_status'] = 1) {
+            if ($_SESSION['login_admin_status'] = 1) {
                 return true;
             } else {
                 return false;
@@ -87,5 +115,27 @@ class User
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $pass
+     * @return mixed
+     *
+     * Encrypts passwords.
+     */
+    protected function EncryptPassword($pass)
+    {
+        return $encrypted_password;
+    }
+
+    /**
+     * @param $pass
+     * @return mixed
+     *
+     * Unencrypts passwords.
+     */
+    protected function UnEncryptPassword($pass)
+    {
+        return $unencrypted_password;
     }
 }
