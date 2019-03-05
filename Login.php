@@ -38,7 +38,7 @@ session_start();
 
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
                         <br>
-                        <a href="Account_aanmaken.php"><button class="btn btn-lg btn-primary btn-block" type="button">Registreren</button></a>
+                        <a href="Registreren.php"><button class="btn btn-lg btn-primary btn-block" type="button">Registreren</button></a>
                     </form>
                 </div>
             </div>

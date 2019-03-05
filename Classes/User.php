@@ -7,9 +7,9 @@ class User
 {
     /**
      * @param $email
-     *  login email
+     *  Login email.
      * @param $pass
-     *  login password
+     *  Login password.
      *
      * Checks input data at login screen against user table, sets session username variable and/or admin status variable.
      */
@@ -18,24 +18,40 @@ class User
         if (!empty($email) && !empty($pass)) {
             $conn = Database::PDOConnect();
 
-            $admin_check_query = $conn->prepare("select * from gebruikers where gebruiker_email=? and gebruiker_wachtwoord=? and gebruiker_admin_status = 1");
+            $admin_check_query = $conn->prepare("select * from gebruikers where gebruiker_email=? and gebruiker_admin_status = 1");
             $admin_check_query->bindParam(1, $email);
-            $admin_check_query->bindParam(2, $pass);
             $admin_check_query->execute();
 
             if ($admin_check_query->rowCount() == 1) {
-                $_SESSION['login_user'] = $email;
-                $_SESSION['login_admin_status'] = 1;
-                header('Location: Home.php');
+                $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_email = '$email'";
+                $stmt = $conn->prepare($sql_pass);
+                $stmt->execute();
+                $row = $stmt->fetch();
+
+                if (self::VerifyEncryptedPassword($pass, $row['gebruiker_wachtwoord'])) {
+                    $_SESSION['login_user'] = $email;
+                    $_SESSION['login_admin_status'] = 1;
+                    header('Location: Home.php');
+                } else {
+                    echo "Verkeerde email en/of wachtwoord.";
+                }
             } else {
-                $db_query = $conn->prepare("select * from gebruikers where gebruiker_email=? and gebruiker_wachtwoord=?");
+                $db_query = $conn->prepare("select * from gebruikers where gebruiker_email=?");
                 $db_query->bindParam(1, $email);
-                $db_query->bindParam(2, $pass);
                 $db_query->execute();
 
                 if ($db_query->rowCount() == 1) {
-                    $_SESSION['login_user'] = $email;
-                    header('Location: Home.php');
+                    $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_email = '$email'";
+                    $stmt = $conn->prepare($sql_pass);
+                    $stmt->execute();
+                    $row = $stmt->fetch();
+
+                    if (self::VerifyEncryptedPassword($pass, $row['gebruiker_wachtwoord'])) {
+                        $_SESSION['login_user'] = $email;
+                        header('Location: Home.php');
+                    } else {
+                        echo "Verkeerde email en/of wachtwoord.";
+                    }
                 } else {
                     echo "Verkeerde email en/of wachtwoord.";
                 }
@@ -46,6 +62,11 @@ class User
     }
 
     /**
+     * @param $email
+     *  register email.
+     * @param $pass
+     *  register password.
+     *
      * Registers new user in database.
      */
     public static function Register($email, $pass)
@@ -60,18 +81,20 @@ class User
             $new_id = $row['MAX(gebruiker_id)'] + 1;
 
             $admin_status = 0;
+            $hashed_pass = self::EncryptPassword($pass);
 
             $sql = "INSERT INTO gebruikers (gebruiker_id, gebruiker_email,gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->execute([$new_id, $email, $pass, $admin_status]);
+            $stmt->execute([$new_id, $email, $hashed_pass, $admin_status]);
+            header('Location: Home.php');
         } else {
-            echo "Logging data is missing. Please enter username and password";
+            echo "login informatie mist.";
 
         }
     }
 
     /**
-     * Log user out and redirects to Home.php .
+     * Logs user out and redirects to Home.php .
      */
     public static function LogOut()
     {
@@ -123,19 +146,24 @@ class User
      *
      * Encrypts passwords.
      */
-    protected function EncryptPassword($pass)
+    public static function EncryptPassword($pass)
     {
-        return $encrypted_password;
+        $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
+        return $hashed_pass;
     }
 
     /**
      * @param $pass
      * @return mixed
      *
-     * Unencrypts passwords.
+     * Verifies encrypted passwords.
      */
-    protected function UnEncryptPassword($pass)
+    protected function VerifyEncryptedPassword($pass, $hashed_pass)
     {
-        return $unencrypted_password;
+        if(password_verify($pass, $hashed_pass)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
