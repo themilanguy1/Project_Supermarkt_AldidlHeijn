@@ -20,24 +20,23 @@ session_start();
             </div>
             <div class="col-md-4">
                 <?php
-                if(Database::LoginStatus()) {
+                if(User::LoginStatus()) {
                     ?>
                     <a href="Loguit.php" class="btn btn-primary">Log uit</a>
                 <?php
                 } else {
                     ?>
-                    <a href="Login.php" class="btn btn-primary">Login</a>
+                    <a href="Login.php" class="btn btn-primary">Log in</a>
                 <?php
                 }
 
-                if(Database::AdminStatus()) {
+                if(User::AdminStatus()) {
                     ?>
                     <a href="Admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a>
                 <?php
                 }
                 ?>
             </div>
-            ?>
             <div class="col-md-12">
                 <br>
                 <h4>Producten</h4>

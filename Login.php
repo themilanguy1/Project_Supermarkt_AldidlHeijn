@@ -37,7 +37,7 @@ session_start();
     </div>
     <?php
     if(isset($_POST['login_email']) & isset($_POST['login_wachtwoord'])) {
-        Database::Login($_POST['login_email'], $_POST['login_wachtwoord']);
+        User::Login($_POST['login_email'], $_POST['login_wachtwoord']);
     }
     ?>
 </body>

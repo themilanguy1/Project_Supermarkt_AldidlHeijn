@@ -8,7 +8,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="Main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -20,24 +20,25 @@ session_start();
         </div>
         <div class="col-md-4">
             <?php
-            if(Database::LoginStatus()) {
+            if(User::LoginStatus()) {
                 ?>
                 <a href="Loguit.php" class="btn btn-primary">Log uit</a>
                 <?php
             } else {
                 ?>
-                <a href="Login.php" class="btn btn-primary">Login</a>
+                <a href="Login.php" class="btn btn-primary">Log in</a>
                 <?php
             }
 
-            if(Database::AdminStatus()) {
+            if(User::AdminStatus()) {
                 ?>
                 <a href="Home.php" class="btn btn-primary">Home</a>
                 <?php
+            } else {
+                header('Location: Home.php');
             }
             ?>
         </div>
-        ?>
     </div>
 </div
 </body>
