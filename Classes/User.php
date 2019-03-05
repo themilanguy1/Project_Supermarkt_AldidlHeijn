@@ -50,7 +50,7 @@ class User
      */
     public static function LogOut() {
         session_start();
-        if(Database::LoginStatus()) {
+        if(User::LoginStatus()) {
             session_destroy();
             header('Location: Home.php');
         } else {
