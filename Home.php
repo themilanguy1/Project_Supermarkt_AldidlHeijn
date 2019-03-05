@@ -1,5 +1,6 @@
 <?php
 require_once('Database.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,14 +23,21 @@ require_once('Database.php');
                 if(Database::LoginStatus()) {
                     ?>
                     <a href="Loguit.php" class="btn btn-primary">Log uit</a>
-                    <?php
+                <?php
                 } else {
                     ?>
                     <a href="Login.php" class="btn btn-primary">Login</a>
-                    <?php
+                <?php
+                }
+
+                if(Database::AdminStatus()) {
+                    ?>
+                    <a href="Admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a>
+                <?php
                 }
                 ?>
             </div>
+            ?>
             <div class="col-md-12">
                 <br>
                 <h4>Producten</h4>
