@@ -24,6 +24,7 @@ session_start();
                 if(User::LoginStatus()) {
                     ?>
                     <a href="Loguit.php" class="btn btn-primary">Log uit</a>
+                    <a href="User_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a>
                 <?php
                 } else {
                     ?>

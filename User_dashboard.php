@@ -17,26 +17,19 @@ session_start();
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <h3>Admin dashboard</h3>
+            <h3>User dashboard</h3>
         </div>
         <div class="col-md-4">
             <?php
             if(User::LoginStatus()) {
                 ?>
                 <a href="Loguit.php" class="btn btn-primary">Log uit</a>
+                <a href="Home.php" class="btn btn-primary">Home</a>
                 <?php
             } else {
                 ?>
                 <a href="Login.php" class="btn btn-primary">Log in</a>
                 <?php
-            }
-
-            if(User::AdminStatus()) {
-                ?>
-                <a href="Home.php" class="btn btn-primary">Home</a>
-                <?php
-            } else {
-                header('Location: Home.php');
             }
             ?>
         </div>

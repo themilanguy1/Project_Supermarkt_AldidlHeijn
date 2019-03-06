@@ -31,6 +31,7 @@ class User
                 if (self::VerifyEncryptedPassword($pass, $row['gebruiker_wachtwoord'])) {
                     $_SESSION['login_user'] = $email;
                     $_SESSION['login_admin_status'] = 1;
+                    $_SESSION['login_status'] = 1;
                     header('Location: Home.php');
                 } else {
                     echo "Verkeerde email en/of wachtwoord.";
@@ -48,6 +49,7 @@ class User
 
                     if (self::VerifyEncryptedPassword($pass, $row['gebruiker_wachtwoord'])) {
                         $_SESSION['login_user'] = $email;
+                        $_SESSION['login_status'] = 1;
                         header('Location: Home.php');
                     } else {
                         echo "Verkeerde email en/of wachtwoord.";
@@ -114,10 +116,10 @@ class User
      */
     public static function LoginStatus()
     {
-        if (isset($_SESSION['login_user'])) {
-            return true;
-        } else {
+        if(isset($_POST['login_status'])) {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -130,7 +132,7 @@ class User
     public static function AdminStatus()
     {
         if (isset($_SESSION['login_admin_status'])) {
-            if ($_SESSION['login_admin_status'] = 1) {
+            if ($_SESSION['login_admin_status']) {
                 return true;
             } else {
                 return false;
@@ -160,7 +162,7 @@ class User
      */
     protected function VerifyEncryptedPassword($pass, $hashed_pass)
     {
-        if(password_verify($pass, $hashed_pass)) {
+        if (password_verify($pass, $hashed_pass)) {
             return true;
         } else {
             return false;
