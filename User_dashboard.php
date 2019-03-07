@@ -1,7 +1,7 @@
 <?php
-require_once('Classes/Database.php');
-require_once('Classes/User.php');
-session_start();
+require_once('Classes/Autoloader.php');
+Autoloader::LoadClasses();
+Autoloader::SessionStart();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,15 +21,11 @@ session_start();
         </div>
         <div class="col-md-4">
             <?php
-            if(User::LoginStatus()) {
-                ?>
-                <a href="Loguit.php" class="btn btn-primary">Log uit</a>
-                <a href="Home.php" class="btn btn-primary">Home</a>
-                <?php
+            if (User::LoginStatus()) {
+                ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
+                ?> <a href="Home.php" class="btn btn-primary">Home</a> <?php
             } else {
-                ?>
-                <a href="Login.php" class="btn btn-primary">Log in</a>
-                <?php
+                header('Location: Home.php');
             }
             ?>
         </div>

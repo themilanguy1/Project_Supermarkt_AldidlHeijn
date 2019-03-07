@@ -1,7 +1,7 @@
 <?php
-require_once('Classes/Database.php');
-require_once('Classes/User.php');
-session_start();
+require_once('Classes/Autoloader.php');
+Autoloader::LoadClasses();
+Autoloader::SessionStart();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,26 +27,26 @@ session_start();
                     <h5 class="card-title text-center">Log hier in</h5>
                     <form class="form-signin" method="POST">
                         <div class="from-label-group">
-                            <input name="login_email" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+                            <input name="login_username" type="text" id="inputUsername" class="form-control" placeholder="gebruikersnaam" required autofocus>
                             <label for="inputEmail"></label>
                         </div>
 
                         <div class="form-label-group">
-                            <input name="login_wachtwoord" type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord" required>
+                            <input name="login_password" type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord" required>
                             <label for="inputPassword"></label>
                         </div>
 
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
                         <br>
-                        <a href="Registreren.php"><button class="btn btn-lg btn-primary btn-block" type="button">Registreren</button></a>
+                        <a href="Register.php"><button class="btn btn-lg btn-primary btn-block" type="button">Registreren</button></a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <?php
-    if(isset($_POST['login_email']) & isset($_POST['login_wachtwoord'])) {
-        User::Login($_POST['login_email'], $_POST['login_wachtwoord']);
+    if(isset($_POST['login_username']) & isset($_POST['login_password'])) {
+        $user_login = new UserLogin($_POST['login_username'], $_POST['login_password']);
     }
     ?>
 </body>

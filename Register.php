@@ -1,7 +1,7 @@
 <?php
-require_once('Classes/Database.php');
-require_once('Classes/User.php');
-session_start();
+require_once('Classes/Autoloader.php');
+Autoloader::LoadClasses();
+Autoloader::SessionStart();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,13 @@ session_start();
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <a href="Login.php" class="btn btn-primary">Log in</a>
+                <?php
+                if (User::LoginStatus()) {
+                    ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
+                } else {
+                    ?> <a href="Login.php" class="btn btn-primary">Log in</a> <?php
+                }
+                ?>
                 <a href="Home.php" class="btn btn-primary">Home</a>
             </div>
             <div class="col-md-8">
@@ -28,17 +34,22 @@ session_start();
                     <h5 class="card-title text-center">Maak een nieuwe account aan</h5>
                     <form class="form-signin" method="POST">
                         <div class="from-label-group">
-                            <input name="registreer_email" type="email" id="inputEmail" class="form-control" placeholder="Vul uw email adres in" required autofocus>
+                            <input name="register_email" type="email" id="inputEmail" class="form-control" placeholder="Vul uw email adres in" required autofocus>
+                            <label for="inputEmail"></label>
+                        </div>
+
+                        <div class="from-label-group">
+                            <input name="register_username" type="text" id="inputUsername" class="form-control" placeholder="Vul uw gebruikersnaam in" required autofocus>
                             <label for="inputEmail"></label>
                         </div>
 
                         <div class="form-label-group">
-                            <input name="registreer_wachtwoord" type="password" id="inputPassword" class="form-control" placeholder="Kies een wachtwoord" required>
+                            <input name="register_password" type="password" id="inputPassword" class="form-control" placeholder="Kies een wachtwoord" required>
                             <label for="inputPassword"></label>
                         </div>
 
                         <div class="form-label-group">
-                            <input name="registreer_wachtwoord_check" type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord herhalen" required>
+                            <input name="register_password_check" type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord herhalen" required>
                             <label for="inputPassword"></label>
                         </div>
 
@@ -49,9 +60,9 @@ session_start();
         </div>
     </div>
     <?php
-    if(isset($_POST['registreer_email']) & isset($_POST['registreer_wachtwoord']) & isset($_POST['registreer_wachtwoord_check'])) {
-        if($_POST['registreer_wachtwoord'] == $_POST['registreer_wachtwoord_check']) {
-            User::Register($_POST['registreer_email'], $_POST['registreer_wachtwoord']);
+    if(isset($_POST['register_email']) & isset($_POST['register_username']) & isset($_POST['register_password']) & isset($_POST['register_password_check'])) {
+        if($_POST['register_password'] == $_POST['register_password_check']) {
+            $user_registration =  new UserRegister($_POST['register_email'], $_POST['register_username'], $_POST['register_password']);
         } else {
             echo "Uw ingevulde wachtwoorden komen niet overeen.";
         }
