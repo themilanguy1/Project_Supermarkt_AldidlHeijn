@@ -6,14 +6,15 @@
 class Database
 {
     /**
-     * Connects to database using PDO
+     * @param string $servername
+     * @param string $username
+     * @param null $password
+     * @return PDO
+     *
+     * Connects to SQL database using PDO.
      */
-    public static function PDOConnect()
+    public static function PDOConnect($servername = "localhost", $username = "root", $password = NULL)
     {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-
         try {
             $conn = new PDO("mysql:host=$servername;dbname=aldidlheijn", $username, $password);
             // set the PDO error mode to exception
@@ -37,7 +38,7 @@ class Database
             ?>
             <div class='col-md-4'>
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top align-self-center" src=" <?php echo $row['product_afbeelding'] ?> "
+                    <img class="card-img-top align-self-center" alt="<?php $row['product_naam'] ?>" src=" <?php echo $row['product_afbeelding'] ?> "
                          style="width:150px;height:150px;">
                     <div class="card-body">
                         <h5 class="card-title"> <?php echo $row['product_naam'] ?> </h5>
