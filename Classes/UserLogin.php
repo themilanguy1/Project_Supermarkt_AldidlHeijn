@@ -29,12 +29,12 @@ class UserLogin extends User
         if (!empty($user) && !empty($pass)) {
             $conn = Database::PDOConnect();
 
-            $admin_check_query = $conn->prepare("select * from gebruikers where gebruiker_username=? and gebruiker_admin_status = 1");
+            $admin_check_query = $conn->prepare("select * from gebruikers where gebruiker_gebruikersnaam=? and gebruiker_admin_status = 1");
             $admin_check_query->bindParam(1, $user);
             $admin_check_query->execute();
 
             if ($admin_check_query->rowCount() == 1) {
-                $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_username = '$user'";
+                $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_gebruikersnaam = '$user'";
                 $stmt = $conn->prepare($sql_pass);
                 $stmt->execute();
                 $row = $stmt->fetch();
@@ -48,12 +48,12 @@ class UserLogin extends User
                     echo "Onjuiste inlog informatie";
                 }
             } else {
-                $db_query = $conn->prepare("select * from gebruikers where gebruiker_username=?");
+                $db_query = $conn->prepare("select * from gebruikers where gebruiker_gebruikersnaam=?");
                 $db_query->bindParam(1, $user);
                 $db_query->execute();
 
                 if ($db_query->rowCount() == 1) {
-                    $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_username = '$user'";
+                    $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_gebruikersnaam = '$user'";
                     $stmt = $conn->prepare($sql_pass);
                     $stmt->execute();
                     $row = $stmt->fetch();

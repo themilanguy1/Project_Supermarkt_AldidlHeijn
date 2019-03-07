@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 05 mrt 2019 om 16:44
--- Serverversie: 10.1.28-MariaDB
--- PHP-versie: 7.1.11
+-- Gegenereerd op: 07 mrt 2019 om 16:56
+-- Serverversie: 10.1.29-MariaDB
+-- PHP-versie: 7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -64,6 +64,7 @@ INSERT INTO `categorie` (`categorie_id`, `categorie_naam`) VALUES
 
 CREATE TABLE `gebruikers` (
   `gebruiker_id` int(11) NOT NULL,
+  `gebruiker_gebruikersnaam` varchar(255) NOT NULL,
   `gebruiker_email` varchar(255) NOT NULL,
   `gebruiker_wachtwoord` varchar(255) NOT NULL,
   `gebruiker_admin_status` tinyint(1) NOT NULL
@@ -73,11 +74,8 @@ CREATE TABLE `gebruikers` (
 -- Gegevens worden geëxporteerd voor tabel `gebruikers`
 --
 
-INSERT INTO `gebruikers` (`gebruiker_id`, `gebruiker_email`, `gebruiker_wachtwoord`, `gebruiker_admin_status`) VALUES
-(1, 'test@test.com', '$2y$10$mvUR0JA4hieBSpksXT/RO.2uSVOmNxUXZ2D05WWv9dG.OhhEEJQAy', 1),
-(2, 'milan@email.com', '$2y$10$5AFA340gYCzXcz57Sm2g7uwUfCaDGJ7bJz2TUrf1lwkjI/sLsoP.6', 0),
-(3, 'hallo123@hallo.com', '$2y$10$ss4Brk8D3.IDS9n6ZO.DouG/CJ0P4THEUB7wTDLuGpV6R5UPh38Mi', 0),
-(4, 'email@email.com', '$2y$10$tYBl0DMiqdCDlDgVT05Ym.sWfy7mg7CG7gf2DE5LJzxw0ZsImtUfm', 0);
+INSERT INTO `gebruikers` (`gebruiker_id`, `gebruiker_gebruikersnaam`, `gebruiker_email`, `gebruiker_wachtwoord`, `gebruiker_admin_status`) VALUES
+(1, 'admin', 'milan.gupta@ymail.com', '$2y$10$FcrWDdDBFQ98NfeSLDQ3IeQ.CRCuN1ze.zGb5Ho.Jch3MxKy8jyVm', 0);
 
 -- --------------------------------------------------------
 
@@ -100,7 +98,7 @@ CREATE TABLE `producten` (
 INSERT INTO `producten` (`product_naam`, `product_nr`, `categorie_id`, `product_afbeelding`, `product_prijs`) VALUES
 ('ei', 1, 'C', 'https://www.partyscene.nl/ckfinder/userfiles/images/egg%20as.jpg', 1.89),
 ('kipfilet', 2, 'B', 'https://slagerijpatrick.nl/wp-content/uploads/2015/09/kipfilet2.jpg', 4.98),
-('donuts', 3, 'D', 'https://www.supermarktaanbiedingen.com/public/images/discount/2016/01/504321.jpg', 2.55),
+('donuts', 3, 'D', 'https://static.ah.nl/image-optimization/static/product/AHI_434d50323533383438_1_LowRes_JPG.JPG?options=399,q80', 2.55),
 ('kaas', 4, 'C', 'http://www.kaashuistromp.nl/wp-content/uploads/HOKA-503.Bioreijck-belegen-Kaas-50-.jpg', 3.32),
 ('extra virgin water', 5, 'F', 'https://images-na.ssl-images-amazon.com/images/I/71i3M3nXkaL._SL1500_.jpg', 1.12),
 ('Banaan', 6, 'A', 'https://cdn.ekoplaza.nl/ekoplaza/producten/large/2166940000000.jpg', 2.23);

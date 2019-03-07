@@ -47,7 +47,7 @@ class UserRegister extends User
             $admin_status = 0;
             $hashed_pass = User::EncryptPassword($pass);
 
-            $sql = "INSERT INTO gebruikers (gebruiker_id, gebruiker_email, gebruiker_username, gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO gebruikers (gebruiker_id, gebruiker_email, gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$new_id, $email, $user, $hashed_pass, $admin_status]);
             header('Location: Home.php');
