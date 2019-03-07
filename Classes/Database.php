@@ -41,7 +41,7 @@ class Database
                          style="width:150px;height:150px;">
                     <div class="card-body">
                         <h5 class="card-title"> <?php echo $row['product_naam'] ?> </h5>
-                        <p class="card-text"> <?php echo $row['product_prijs'] ?> </p>
+                        <p class="card-text">€ <?php echo $row['product_prijs'] ?> </p>
                         <a href="#" class="btn btn-primary">Stik in je speeksel, makker.</a>
                     </div>
                 </div>
