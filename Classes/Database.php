@@ -30,9 +30,8 @@ class Database
      */
     public static function FetchProducts()
     {
-
         $conn = self::PDOConnect();
-        $result = $conn->query('SELECT * FROM producten')->fetchAll(PDO::FETCH_ASSOC);
+        $result = $conn->query('SELECT * FROM producten, categorie WHERE producten.categorie_id = categorie.categorie_id')->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($result as $row) {
             ?>
@@ -42,6 +41,7 @@ class Database
                          style="width:150px;height:150px;">
                     <div class="card-body">
                         <h5 class="card-title"> <?php echo $row['product_naam'] ?> </h5>
+                        <h6 class="card-title"> <?php echo "Categorie: " . $row['categorie_naam'] ?> </h6>
                         <p class="card-text">€ <?php echo $row['product_prijs'] ?> </p>
                         <a href="#" class="btn btn-primary">Stik in je speeksel, makker.</a>
                     </div>

@@ -17,7 +17,7 @@ Autoloader::SessionStart();
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <h3>User dashboard</h3>
+            <h3>Gebruiker dashboard</h3>
         </div>
         <div class="col-md-4">
             <?php
