@@ -1,7 +1,6 @@
 <?php
 require_once('Classes/Autoloader.php');
-Autoloader::LoadClasses();
-Autoloader::SessionStart();
+Session::SessionStart();
 ?>
 <!DOCTYPE html>
 <html lang="en">
