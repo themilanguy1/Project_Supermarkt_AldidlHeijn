@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 07 mrt 2019 om 22:09
+-- Gegenereerd op: 09 mrt 2019 om 13:34
 -- Serverversie: 10.1.28-MariaDB
 -- PHP-versie: 7.1.11
 
@@ -38,7 +38,7 @@ CREATE TABLE `categorie` (
 --
 
 INSERT INTO `categorie` (`categorie_id`, `categorie_naam`) VALUES
-('A', 'Groenten, fruit'),
+('A', 'Groente, fruit'),
 ('B', 'Vlees, kip, vis'),
 ('C', 'Zuivel, eieren'),
 ('D', 'Bakkerij'),
@@ -86,7 +86,7 @@ INSERT INTO `gebruikers` (`gebruiker_id`, `gebruiker_gebruikersnaam`, `gebruiker
 
 CREATE TABLE `producten` (
   `product_naam` varchar(255) NOT NULL,
-  `product_nr` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `categorie_id` varchar(1) NOT NULL,
   `product_afbeelding` varchar(255) NOT NULL,
   `product_prijs` double(10,2) NOT NULL
@@ -96,7 +96,7 @@ CREATE TABLE `producten` (
 -- Gegevens worden geëxporteerd voor tabel `producten`
 --
 
-INSERT INTO `producten` (`product_naam`, `product_nr`, `categorie_id`, `product_afbeelding`, `product_prijs`) VALUES
+INSERT INTO `producten` (`product_naam`, `product_id`, `categorie_id`, `product_afbeelding`, `product_prijs`) VALUES
 ('ei', 1, 'C', 'https://www.partyscene.nl/ckfinder/userfiles/images/egg%20as.jpg', 1.89),
 ('kipfilet', 2, 'B', 'https://slagerijpatrick.nl/wp-content/uploads/2015/09/kipfilet2.jpg', 4.98),
 ('donuts', 3, 'D', 'https://static.ah.nl/image-optimization/static/product/AHI_434d50323533383438_1_LowRes_JPG.JPG?options=399,q80', 2.55),
@@ -124,7 +124,7 @@ ALTER TABLE `gebruikers`
 -- Indexen voor tabel `producten`
 --
 ALTER TABLE `producten`
-  ADD PRIMARY KEY (`product_nr`),
+  ADD PRIMARY KEY (`product_id`),
   ADD KEY `categorie_id` (`categorie_id`);
 COMMIT;
 
