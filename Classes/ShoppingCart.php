@@ -47,14 +47,8 @@ class ShoppingCart
     {
         if (!empty($product_id && $product_quantity)) {
             if (isset($_SESSION['shopping_cart_inventory']) && (!empty($_SESSION['shopping_cart_inventory']))) {
-                if (array_search($product_id, array_column($_SESSION['shopping_cart_inventory'], 'product_id')) === true) {
+                if (array_search($product_id, array_column($_SESSION['shopping_cart_inventory'], 'product_id'))) {
                     echo "yeet";
-//                    foreach ($item as $key => $value) {
-//                        if ($key == $product_id) {
-//                            echo $key;
-//                            $value = 21;
-//                        }
-//                    }
                 }
                 else {
                     $_SESSION['shopping_cart_inventory'][] = array(
@@ -71,7 +65,7 @@ class ShoppingCart
                 );
             }
         }
-//        header('Location: Home.php');
+        header('Location: Home.php');
     }
 
 
