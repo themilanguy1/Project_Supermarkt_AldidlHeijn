@@ -47,16 +47,18 @@ class Database
                         <form method="GET" action="AddToShoppingCart.php">
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <input type="hidden" name="add_product_id" value="<?php echo $row['product_id'] ?>" >
-                                    <input class="form-control" type="number" min="1" max="999" name="add_product_quantity" value="1" required>
+                                    <input type="hidden" name="add_product_id" value="<?php echo $row['product_id'] ?>">
+                                    <input class="form-control" type="number" min="1" max="999"
+                                           name="add_product_quantity" value="1" required>
                                 </div>
                                 <div class="form group col-md-3">
 
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <button type="submit" class="btn btn-primary">Voeg toe <i class="fas fa-shopping-cart"></i></button>
+                                    <button type="submit" class="btn btn-primary">Voeg toe <i
+                                                class="fas fa-shopping-cart"></i></button>
                                 </div>
-                           </div>
+                            </div>
                         </form>
                     </div>
                 </div>
