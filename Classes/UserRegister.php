@@ -38,17 +38,13 @@ class UserRegister extends User
         if (!empty($email) && !empty($pass)) {
             $conn = Database::PDOConnect();
 
-            $sql_id = "SELECT MAX(gebruiker_id) FROM gebruikers";
-            $stmt = $conn->prepare($sql_id);
-            $stmt->execute();
-            $row = $stmt->fetch();
-            $new_id = $row['MAX(gebruiker_id)'] + 1;
+            $stmt = $conn->query("SELECT MAX(gebruiker_id) + 1 FROM gebruikers");
+            $new_id = $stmt->fetchColumn();
 
             $admin_status = 0;
             $hashed_pass = User::EncryptPassword($pass);
 
-            $sql = "INSERT INTO gebruikers (gebruiker_id, gebruiker_email, gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
+            $stmt = $conn->prepare("INSERT INTO gebruikers (gebruiker_id, gebruiker_email, gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?, ?)");
             $stmt->execute([$new_id, $email, $user, $hashed_pass, $admin_status]);
             header('Location: Home.php');
         } else {
