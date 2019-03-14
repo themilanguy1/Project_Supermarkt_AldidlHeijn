@@ -37,8 +37,10 @@ class User
         if (User::LoginStatus()) {
             session_destroy();
             header('Location: Home.php');
+            die;
         } else {
             header('Location: Home.php');
+            die;
         }
     }
 

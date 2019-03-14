@@ -25,9 +25,11 @@ Session::SessionStart();
                     ?> <a href="Home.php" class="btn btn-primary">Home</a> <?php
                 } else {
                     header('Location: Home.php');
+                    die;
                 }
             } else {
                 header('Location: Home.php');
+                die;
             }
             ?>
         </div>

@@ -44,6 +44,7 @@ class UserLogin extends User
                     $_SESSION['login_admin_status'] = true;
                     $_SESSION['login_status'] = true;
                     header('Location: Home.php');
+                    die;
                 } else {
                     echo "Onjuiste inlog informatie";
                 }
@@ -62,6 +63,7 @@ class UserLogin extends User
                         $_SESSION['login_user'] = $user;
                         $_SESSION['login_status'] = true;
                         header('Location: Home.php');
+                        die;
                     } else {
                         echo "Onjuiste inlog informatie";
                     }

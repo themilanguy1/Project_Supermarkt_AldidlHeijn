@@ -47,6 +47,7 @@ class UserRegister extends User
             $stmt = $conn->prepare("INSERT INTO gebruikers (gebruiker_id, gebruiker_email, gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?, ?)");
             $stmt->execute([$new_id, $email, $user, $hashed_pass, $admin_status]);
             header('Location: Home.php');
+            die;
         } else {
             echo "login informatie mist.";
         }
