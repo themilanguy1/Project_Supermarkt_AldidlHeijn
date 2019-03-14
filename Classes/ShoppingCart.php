@@ -23,11 +23,9 @@ class ShoppingCart
             foreach ($_SESSION['shopping_cart_inventory'] as $item) {
                 echo "<tr>";
                 if (is_array($item) || is_object($item)) {
-                    foreach ($item as $key => $value) {
-//                        echo "<td>" .$value['product_id'] ."</td>";
-//                        echo "<td>" .$value['product_quantity'] ."</td>";
-//                        echo "<td><a href='RemoveFromShoppingCart.php?remove_product_id=" . $value['product_id'] . "'><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></td>";
-                    }
+                    echo "<td>" .$item['product_id'] ."</td>";
+                    echo "<td>" .$item['product_quantity'] ."</td>";
+                    echo "<td><a href='RemoveFromShoppingCart.php?remove_product_id=" . $item['product_id'] . "'><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></td>";
                 }
                 echo "</tr>";
             }
@@ -48,17 +46,6 @@ class ShoppingCart
      */
     public static function Add($product_id, $product_quantity)
     {
-        function checkCartForItem($cart_product_id, $cart_items)
-        {
-            if (is_array($cart_items)) {
-                foreach ($cart_items as $key => $item) {
-                    if ($item['product_id'] === $cart_product_id)
-                        return $key;
-                }
-            }
-            return false;
-        }
-
         if (!isset($_SESSION['shopping_cart_inventory'])) {
             $_SESSION['shopping_cart_inventory'] = array();
         }
@@ -69,7 +56,7 @@ class ShoppingCart
             );
 
             $cart_product_id = $new_item['product_id'];
-            $itemExists = checkCartForItem($cart_product_id, $_SESSION['shopping_cart_inventory']);
+            $itemExists = self::checkCartForItem($cart_product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($itemExists !== false) {
                 // item exists - increment quantity value by 1
@@ -83,15 +70,23 @@ class ShoppingCart
     }
 
     /**
-     * @param $product_id
+     * @param $remove_product_id
+     *  Id by which to remove item from shopping cart.
      *
      *  Removes item from cart according to paramater: $product_id.
      */
-    public static function Remove($product_id)
+    public static function RemoveFromCart($remove_product_id)
     {
-        if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
-            unset($_SESSION['shopping_cart_inventory'][$product_id]);
+        if (!(empty($remove_product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
+            $itemExists = self::checkCartForItem($remove_product_id, $_SESSION['shopping_cart_inventory']);
+
+            if ($itemExists !== false) {
+                // item exists - increment quantity value by 1
+                unset($_SESSION['shopping_cart_inventory'][$itemExists]);
+            }
         }
+        header('Location: Home.php');
+        die;
     }
 
     /**
@@ -113,4 +108,23 @@ class ShoppingCart
     }
 
 
+    /**
+     * @param $cart_product_id
+     *  string Product id of item to check for.
+     * @param $cart_items
+     *  array List of arrays with items.
+     * @return bool|int|string
+     *
+     *  Checks shopping cart for item according to product_id.
+     */
+    protected static function checkCartForItem($cart_product_id, $cart_items)
+    {
+        if (is_array($cart_items)) {
+            foreach ($cart_items as $key => $item) {
+                if ($item['product_id'] === $cart_product_id)
+                    return $key;
+            }
+        }
+        return false;
+    }
 }
