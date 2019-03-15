@@ -28,21 +28,27 @@ class Database
     /**
      * Fetches items from DataBase.
      */
-    public static function FetchProducts()
+    public static function FetchProducts($filter_category = null)
     {
-        $conn = self::PDOConnect();
-        $result = $conn->query('SELECT * FROM producten, categorie WHERE producten.categorie_id = categorie.categorie_id')->fetchAll(PDO::FETCH_ASSOC);
+        if ($filter_category !== null) {
+            $filter_category = str_replace('&20', ' ', $filter_category);
+            $result = self::PDOConnect()->query("SELECT * FROM producten, categorie WHERE producten.categorie_id = categorie.categorie_id AND categorie_naam ='$filter_category' ")->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            // normal fetchAll.
+            $result = self::PDOConnect()->query("SELECT * FROM producten, categorie WHERE producten.categorie_id = categorie.categorie_id")->fetchAll(PDO::FETCH_ASSOC);
+        }
+
 
         foreach ($result as $row) {
             ?>
             <div class='col-md-4' xmlns="http://www.w3.org/1999/html">
-                <div class="card" style="width: 18rem;">
+                <div class="card" style="width: 18rem; margin-top: 0.5em;">
                     <img class="card-img-top align-self-center" alt="<?php $row['product_naam'] ?>"
                          src=" <?php echo $row['product_afbeelding'] ?> "
-                         style="width:150px;height:150px;">
+                         style="width:100px;height:100px;">
                     <div class="card-body">
                         <h5 class="card-title"> <?php echo $row['product_naam'] ?> </h5>
-                        <p class="card-title"> <?php echo "Categorie: " . $row['categorie_naam'] ?> </p>
+                        <p class="card-title"> <?php echo "Categorie: <a href='?ProductFilter=" . $row['categorie_naam'] . "'>" . $row['categorie_naam'] . "</a>" ?> </p>
                         <p class="card-text">€ <?php echo $row['product_prijs'] ?> </p>
                         <form method="GET" action="AddToShoppingCart.php">
                             <div class="form-row">

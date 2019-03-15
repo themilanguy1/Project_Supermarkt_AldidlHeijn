@@ -36,7 +36,11 @@ Session::SessionStart();
             <h4>Producten</h4>
         </div>
         <?php
-        Database::FetchProducts();
+        if (isset($_GET['ProductFilter']) && (!empty($_GET['ProductFilter']))) {
+            Database::FetchProducts($_GET['ProductFilter']);
+        } else {
+            Database::FetchProducts();
+        }
         ShoppingCart::DisplayInventory();
         ?>
     </div>

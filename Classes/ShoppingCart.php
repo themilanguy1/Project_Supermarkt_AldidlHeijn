@@ -6,12 +6,12 @@
 class ShoppingCart
 {
     /**
-     * @return bool
-     *  Displays shopping cart inventory.
+     * Displays shopping cart inventory.
      */
     public static function DisplayInventory()
     {
         if (isset($_SESSION['shopping_cart_inventory']) && (!empty($_SESSION['shopping_cart_inventory']))) {
+            echo "<div class='col-md-12'>";
             echo "<table class='table'>";
             echo "<thead class='thead-dark'>";
             echo "<tr>";
@@ -23,14 +23,15 @@ class ShoppingCart
             foreach ($_SESSION['shopping_cart_inventory'] as $item) {
                 echo "<tr>";
                 if (is_array($item) || is_object($item)) {
-                    echo "<td>" .$item['product_id'] ."</td>";
-                    echo "<td>" .$item['product_quantity'] ."</td>";
+                    echo "<td>" . $item['product_id'] . "</td>";
+                    echo "<td>" . $item['product_quantity'] . "</td>";
                     echo "<td><a href='RemoveFromShoppingCart.php?remove_product_id=" . $item['product_id'] . "'><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></td>";
                 }
                 echo "</tr>";
             }
             echo "</tbody>";
             echo "</table>";
+            echo "</div>";
         } else {
             echo "Winkelmand leeg.";
         }
@@ -49,18 +50,17 @@ class ShoppingCart
         if (!isset($_SESSION['shopping_cart_inventory'])) {
             $_SESSION['shopping_cart_inventory'] = array();
         }
+
         if (!empty($product_id && $product_quantity)) {
             $new_item = array(
                 'product_id' => $product_id,
                 'product_quantity' => $product_quantity
             );
 
-            $cart_product_id = $new_item['product_id'];
-            $itemExists = self::checkCartForItem($cart_product_id, $_SESSION['shopping_cart_inventory']);
+            $item_exists = self::checkCartForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
-            if ($itemExists !== false) {
-                // item exists - increment quantity value by 1
-                $_SESSION['shopping_cart_inventory'][$itemExists]['product_quantity'] = $product_quantity + $_SESSION['shopping_cart_inventory'][$itemExists]['product_quantity'];
+            if ($item_exists !== false) {
+                $_SESSION['shopping_cart_inventory'][$item_exists]['product_quantity'] = $product_quantity + $_SESSION['shopping_cart_inventory'][$item_exists]['product_quantity'];
             } else {
                 $_SESSION['shopping_cart_inventory'][] = $new_item;
             }
@@ -73,15 +73,14 @@ class ShoppingCart
      * @param $remove_product_id
      *  Id by which to remove item from shopping cart.
      *
-     *  Removes item from cart according to paramater: $product_id.
+     *  Removes item from cart according to parameter: $product_id.
      */
-    public static function RemoveFromCart($remove_product_id)
+    public static function Remove($remove_product_id)
     {
         if (!(empty($remove_product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
             $itemExists = self::checkCartForItem($remove_product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($itemExists !== false) {
-                // item exists - increment quantity value by 1
                 unset($_SESSION['shopping_cart_inventory'][$itemExists]);
             }
         }
