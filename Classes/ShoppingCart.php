@@ -11,23 +11,22 @@ class ShoppingCart
     public static function DisplayInventory()
     {
         if (isset($_SESSION['shopping_cart_inventory']) && (!empty($_SESSION['shopping_cart_inventory']))) {
-            echo "<div class='col-md-6'>";
             echo "<table class='table'>";
             echo "<thead class='thead-dark'>";
             echo "<tr>";
             echo "<th scope='col'>Product</th>";
             echo "<th scope='col'>Prijs</th>";
             echo "<th scope='col'>Aantal</th>";
-            echo "<th scope='col'><a href='EmptyShoppingCart.php'>Empty</a></th>";
+            echo "<th scope='col'><a href='EmptyShoppingCart.php'><i class=\"far fa-trash-alt\"></i> Alles</a></th>";
             echo "</tr>";
             echo "<tbody>";
             $total_price = 0;
             foreach ($_SESSION['shopping_cart_inventory'] as $item) {
-                $total_price = number_format($total_price+($item['product_price']*$item['product_quantity']), 2);
+                $total_price = number_format($total_price + ($item['product_price'] * $item['product_quantity']), 2);
                 echo "<tr>";
                 if (is_array($item) || is_object($item)) {
                     echo "<td>" . $item['product_name'] . "</td>";
-                    echo "<td> € " . number_format($val = ($item['product_price']*$item['product_quantity']), 2) . "</td>";
+                    echo "<td> € " . number_format($val = ($item['product_price'] * $item['product_quantity']), 2) . "</td>";
                     echo "<td>" . $item['product_quantity'] . "</td>";
                     echo "<td><a href='RemoveFromShoppingCart.php?remove_product_id=" . $item['product_id'] . "'><i style='color: black;' class=\"far fa-trash-alt\"></i></a></td>";
                 }
@@ -41,7 +40,6 @@ class ShoppingCart
             echo "</tr>";
             echo "</tbody>";
             echo "</table>";
-            echo "</div>";
         } else {
             echo "Winkelmand leeg.";
         }

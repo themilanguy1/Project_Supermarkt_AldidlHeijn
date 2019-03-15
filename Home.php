@@ -32,8 +32,12 @@ Session::SessionStart();
             ?>
         </div>
         <div class="col-md-12">
-            <br>
             <h4>Producten</h4>
+        </div>
+        <div class="col-md-12">
+            <?php
+                Database::FetchClickableCategories();
+            ?>
         </div>
         <?php
         if (isset($_GET['ProductFilter']) && (!empty($_GET['ProductFilter']))) {
@@ -43,6 +47,7 @@ Session::SessionStart();
         }
         ShoppingCart::DisplayInventory();
         ?>
+        </div>
     </div>
 </div>
 </body>
