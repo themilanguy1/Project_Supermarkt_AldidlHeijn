@@ -26,7 +26,10 @@ class Database
     }
 
     /**
-     * Fetches items from DataBase.
+     * @param null $filter_category
+     *  Category by which to filter products.
+     *
+     *  Fetches items from DataBase.
      */
     public static function FetchProducts($filter_category = null)
     {
@@ -54,6 +57,8 @@ class Database
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <input type="hidden" name="add_product_id" value="<?php echo $row['product_id'] ?>">
+                                    <input type="hidden" name="add_product_name" value="<?php echo $row['product_naam'] ?>">
+                                    <input type="hidden" name="add_product_price" value="<?php echo $row['product_prijs'] ?>">
                                     <input class="form-control" type="number" min="1" max="999"
                                            name="add_product_quantity" value="1" required>
                                 </div>
