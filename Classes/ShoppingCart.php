@@ -11,35 +11,57 @@ class ShoppingCart
     public static function DisplayInventory()
     {
         if (isset($_SESSION['shopping_cart_inventory']) && (!empty($_SESSION['shopping_cart_inventory']))) {
-            echo "<table class='table'>";
-            echo "<thead class='thead-dark'>";
-            echo "<tr>";
-            echo "<th scope='col'>Product</th>";
-            echo "<th scope='col'>Prijs</th>";
-            echo "<th scope='col'>Aantal</th>";
-            echo "<th scope='col'><a href='EmptyShoppingCart.php'><i class=\"far fa-trash-alt\"></i> Alles</a></th>";
-            echo "</tr>";
-            echo "<tbody>";
-            $total_price = 0;
-            foreach ($_SESSION['shopping_cart_inventory'] as $item) {
-                $total_price = number_format($total_price + ($item['product_price'] * $item['product_quantity']), 2);
-                echo "<tr>";
-                if (is_array($item) || is_object($item)) {
-                    echo "<td>" . $item['product_name'] . "</td>";
-                    echo "<td> € " . number_format($val = ($item['product_price'] * $item['product_quantity']), 2) . "</td>";
-                    echo "<td>" . $item['product_quantity'] . "</td>";
-                    echo "<td><a href='RemoveFromShoppingCart.php?remove_product_id=" . $item['product_id'] . "'><i style='color: black;' class=\"far fa-trash-alt\"></i></a></td>";
+            ?>
+            <table class='table' style='margin:0.5em;'>
+                <thead class='thead-dark'>
+                <tr>
+                    <th scope='col'>Product</th>
+                    <th scope='col'>Prijs</th>
+                    <th scope='col'>Aantal</th>
+                    <th scope='col'><a href='EmptyShoppingCart.php'><i class=\"far fa-trash-alt\"></i> Alles</a></th>
+                </tr>
+                <tbody>
+                <?php
+                $total_price = 0;
+                foreach ($_SESSION['shopping_cart_inventory'] as $item) {
+                    $total_price = ($total_price + ($item['product_price'] * $item['product_quantity']));
+                    echo "<tr>";
+                    if (is_array($item) || is_object($item)) {
+                        echo "<td>" . $item['product_name'] . "</td>";
+                        echo "<td> € " . number_format($val = ($item['product_price'] * $item['product_quantity']), 2) . "</td>";
+                        ?>
+                        <td>
+                            <form method="GET" action="EditQuantityShoppingCart.php">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <input type="hidden" name="edit_quantity_product_id"
+                                               value="<?php echo $item['product_id'] ?>">
+                                        <input class="form-control" style="max-width:4.5em;" type="number" min="1"
+                                               name="edit_product_quantity"
+                                               value="<?php echo $item['product_quantity'] ?>"required>
+                                    </div>
+                                    <div class=" form-group text-right">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                        <?php
+                        echo "<td><a href='RemoveFromShoppingCart.php?remove_product_id=" . $item['product_id'] . "'><i style='color: black;' class=\"far fa-trash-alt\"></i></a></td>";
+                    }
+                    echo "</tr>";
                 }
-                echo "</tr>";
-            }
-            echo "<tr>";
-            echo "<td><b>Totaal: </b></td>";
-            echo "<td>€ $total_price</td>";
-            echo "<td></td>";
-            echo "<td></td>";
-            echo "</tr>";
-            echo "</tbody>";
-            echo "</table>";
+                ?>
+                <tr>
+                    <td><b>Totaal: </b></td>
+                    <td><b>€ <?php echo $total_price ?> </b></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <?php
         } else {
             echo "Winkelmand leeg.";
         }
@@ -84,15 +106,15 @@ class ShoppingCart
     }
 
     /**
-     * @param $remove_product_id
-     *  Id by which to remove item from shopping cart.
+     * @param $product_id
+     *  int Product id.
      *
-     *  Removes item from cart according to parameter: $product_id.
+     *  Removes item from cart.
      */
-    public static function Remove($remove_product_id)
+    public static function Remove($product_id)
     {
-        if (!(empty($remove_product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
-            $itemExists = self::checkCartForItem($remove_product_id, $_SESSION['shopping_cart_inventory']);
+        if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
+            $itemExists = self::checkCartForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($itemExists !== false) {
                 unset($_SESSION['shopping_cart_inventory'][$itemExists]);
@@ -114,12 +136,26 @@ class ShoppingCart
         die;
     }
 
-
-    public static function EditQuantity()
+    /**
+     * @param $product_id
+     *  int Product id.
+     * @param $new_product_quantity
+     *  int New product quantity.
+     *
+     *  Edits quantity of item in cart.
+     */
+    public static function EditQuantity($product_id, $new_product_quantity)
     {
-        //placeholder
-    }
+        if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
+            $itemExists = self::checkCartForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
+            if ($itemExists !== false) {
+                $_SESSION['shopping_cart_inventory'][$itemExists]['product_quantity'] = $new_product_quantity;
+            }
+        }
+        header('Location: Home.php');
+        die;
+    }
 
     /**
      * @param $cart_product_id

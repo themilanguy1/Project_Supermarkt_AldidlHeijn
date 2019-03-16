@@ -44,7 +44,7 @@ class Database
         foreach ($result as $row) {
             ?>
             <div class='col-md-4' xmlns="http://www.w3.org/1999/html">
-                <div class="card" style="height: 18em; width: 18em; margin-top: 0.5em;">
+                <div class="card mx-auto" style="min-height: 18em; min-width: 18em; margin-top: 0.5em;">
                     <img class="card-img-top align-self-center" alt="<?php $row['product_naam'] ?>"
                          src=" <?php echo $row['product_afbeelding'] ?> "
                          style="width:60px;height:60px; margin: 1em;">
@@ -62,7 +62,7 @@ class Database
                                 <input type="hidden" name="add_product_name" value="<?php echo $row['product_naam'] ?>">
                                 <input type="hidden" name="add_product_price"
                                        value="<?php echo $row['product_prijs'] ?>">
-                                <input class="form-control" type="number" min="1" max="999"
+                                <input class="form-control" type="number" min="1"
                                        name="add_product_quantity" value="1" required>
                             </div>
                             <div class="form-group col-md-8 text-right">
