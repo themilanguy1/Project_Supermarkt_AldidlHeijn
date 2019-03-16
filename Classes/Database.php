@@ -50,9 +50,9 @@ class Database
                          style="width:60px;height:60px; margin: 1em;">
                     <div class="card-body">
                         <h5 class="card-title"> <?php echo $row['product_naam'] ?> </h5>
-                        <div style="height: 3em;>
-                            <p class=" card-title
-                        "> <?php echo "Categorie: <a href='?ProductFilter=" . $row['categorie_naam'] . "'>" . $row['categorie_naam'] . "</a>" ?> </p>
+                        <div style="height: 3em; class=" card-title
+                        ">
+                        <?php echo "<p>Categorie: <a href='?ProductFilter=" . $row['categorie_naam'] . "'>" . $row['categorie_naam'] . "</a></p>" ?>
                     </div>
                     <p class="card-text">€ <?php echo $row['product_prijs'] ?> </p>
                     <form method="GET" action="AddToShoppingCart.php">

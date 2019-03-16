@@ -45,6 +45,9 @@ Session::SessionStart();
         } else {
             Database::FetchProducts();
         }
+        ?>
+        <div class="col-md-12">
+        <?php
         ShoppingCart::DisplayInventory();
         ?>
         </div>
