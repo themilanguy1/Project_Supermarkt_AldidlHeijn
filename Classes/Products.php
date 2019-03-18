@@ -1,22 +1,25 @@
 <?php
 
 /**
- * Class Database
+ * Class Products
  */
 class Products
 {
     /**
      * @param null $category
-     *  string Category by which to filter SQL select.
+     *  string Category for filter.
+     * @param null $search
+     *  string Search parameter.
      * @return array
      *
      * Fetches products from database according to category/search filter, displays products.
      */
-    public static function Fetch($category = null)
+    public static function Fetch($category = null, $search = null)
     {
         $conn = Utility::PDOConnect();
         $category_filter = Products::GetCategoryFilter($category);
-        $data = $conn->query("SELECT * FROM producten, categorie WHERE producten.categorie_id = categorie.categorie_id $category_filter")->fetchAll(PDO::FETCH_ASSOC);
+        $search_filter = Products::GetSearchFilter($search);
+        $data = $conn->query("SELECT * FROM producten, categorie WHERE producten.categorie_id = categorie.categorie_id $category_filter $search_filter")->fetchAll(PDO::FETCH_ASSOC);;
         return $data;
     }
 
@@ -47,7 +50,7 @@ class Products
                                            name="add_product_quantity" value="1" required>
                                 </div>
                                 <div class="form-group col-md-8 text-right">
-                                    <button type="submit" class="btn btn-primary"><i
+                                    <button type="submit" class="btn btn-success"><i
                                                 class="fas fa-shopping-cart"></i></button>
                                 </div>
                             </div>
@@ -59,7 +62,6 @@ class Products
         }
     }
 
-
     /**
      * @param $category
      *  string Category by which to create filter.
@@ -67,31 +69,32 @@ class Products
      *
      *  Returns SQL code to filter by category.
      */
-    public function GetCategoryFilter($category)
+    public static function GetCategoryFilter($category)
     {
         if (!empty($category)) {
             // Create category filter.
-            $category_filter = "AND categorie_naam = '" . str_replace('&20', ' ', $category) . "';'";
+            $category_filter = "AND categorie_naam = '" . str_replace('&20', ' ', $category) . "'";
             return $category_filter;
         } else {
             return null;
         }
     }
 
-//    /**
-//     * @param $search
-//     * @return null
-//     *
-//     *  Returns SQL code to filter by search.
-//     */
-//    protected function GetSearchFilter($search)
-//    {
-//        if (!empty($search)) {
-//            // Create category filter.
-//            $search_filter = "AND product_naam = %" . $search . "%";
-//            return $search_filter;
-//        } else {
-//            return null;
-//        }
-//    }
+    /**
+     * @param $search
+     *  string Search parameter.
+     * @return null
+     *
+     *  Returns SQL code to filter by search.
+     */
+    public static function GetSearchFilter($search)
+    {
+        if (!empty($search)) {
+            // Create category filter.
+            $search_filter = "AND product_naam LIKE '%" . str_replace('&20', ' ', $search) . "%'";
+            return $search_filter;
+        } else {
+            return null;
+        }
+    }
 }

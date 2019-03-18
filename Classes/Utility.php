@@ -16,10 +16,11 @@ class Utility
             $conn = new PDO("mysql:host=$servername;dbname=aldidlheijn", $username, $password);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $conn;
         } catch (PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
+            $conn = null;
         }
+        return $conn;
     }
 
     /**
@@ -31,10 +32,10 @@ class Utility
         $categories = $conn->query("SELECT categorie_naam, COUNT(product_naam) as aantal_producten FROM categorie, producten WHERE categorie.categorie_id = producten.categorie_id GROUP BY categorie_naam")->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($categories as $row) {
-            echo "<a href='?category=" . $row['categorie_naam'] . "'><button class='btn btn-primary'>" . $row['categorie_naam'] . " <span class='badge badge-light'>" . $row['aantal_producten'] . "</span></button></a> ";
+            echo "<a href='?category=" . $row['categorie_naam'] . "'><button class='btn btn-success'>" . $row['categorie_naam'] . " <span class='badge badge-light'>" . $row['aantal_producten'] . "</span></button></a> ";
         }
         $product_total = Utility::GetProductTotal();
-        echo "<a href='?category='><button class='btn btn-primary'>Alles <span class='badge badge-light'>" . $product_total . "</span></button></a> ";
+        echo "<a href='?category='><button class='btn btn-success'>Alles <span class='badge badge-light'>" . $product_total . "</span></button></a> ";
     }
 
     public static function GetProductTotal()

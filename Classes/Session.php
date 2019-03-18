@@ -21,7 +21,7 @@ class Session
     public static function LogOut()
     {
         session_start();
-        if (self::LoginStatus()) {
+        if (Session::LoginStatus()) {
             session_destroy();
             header('Location: Home.php');
             die;

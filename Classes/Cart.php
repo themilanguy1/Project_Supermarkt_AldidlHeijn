@@ -12,7 +12,7 @@ class Cart
     {
         if (isset($_SESSION['shopping_cart_inventory']) && (!empty($_SESSION['shopping_cart_inventory']))) {
             ?>
-            <table class='table' style='margin:0.5em;'>
+            <table class='table'>
                 <thead class='thead-dark'>
                 <tr>
                     <th scope='col'>Product</th>
@@ -42,7 +42,7 @@ class Cart
                                            value="<?php echo $item['product_quantity'] ?>" required>
                                 </div>
                                 <div class=" form-group text-right">
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i>
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-sync"></i>
                                     </button>
                                 </div>
                             </div>
@@ -68,6 +68,26 @@ class Cart
         } else {
             echo "Winkelmand leeg.";
         }
+    }
+
+    /**
+     * @param $cart_product_id
+     *  int Product id of item to check for.
+     * @param $cart_items
+     *  array List of arrays with items.
+     * @return bool|int|string
+     *
+     *  Checks shopping cart for item according to product_id.
+     */
+    public static function CheckForItem($cart_product_id, $cart_items)
+    {
+        if (is_array($cart_items)) {
+            foreach ($cart_items as $key => $item) {
+                if ($item['product_id'] === $cart_product_id)
+                    return $key;
+            }
+        }
+        return false;
     }
 
     /**
@@ -107,26 +127,6 @@ class Cart
     }
 
     /**
-     * @param $cart_product_id
-     *  int Product id of item to check for.
-     * @param $cart_items
-     *  array List of arrays with items.
-     * @return bool|int|string
-     *
-     *  Checks shopping cart for item according to product_id.
-     */
-    public static function CheckForItem($cart_product_id, $cart_items)
-    {
-        if (is_array($cart_items)) {
-            foreach ($cart_items as $key => $item) {
-                if ($item['product_id'] === $cart_product_id)
-                    return $key;
-            }
-        }
-        return false;
-    }
-
-    /**
      * @param $product_id
      *  int Product id.
      * @param $new_product_quantity
@@ -146,16 +146,6 @@ class Cart
     }
 
     /**
-     * Empties shopping cart.
-     */
-    public static function EmptyCart()
-    {
-        if (isset($_SESSION['shopping_cart_inventory'])) {
-            unset($_SESSION['shopping_cart_inventory']);
-        }
-    }
-
-    /**
      * @param $product_id
      *  int Product id.
      *
@@ -169,6 +159,16 @@ class Cart
             if ($itemExists !== false) {
                 unset($_SESSION['shopping_cart_inventory'][$itemExists]);
             }
+        }
+    }
+
+    /**
+     * Empties shopping cart.
+     */
+    public static function EmptyCart()
+    {
+        if (isset($_SESSION['shopping_cart_inventory'])) {
+            unset($_SESSION['shopping_cart_inventory']);
         }
     }
 }

@@ -47,7 +47,7 @@ Session::Start();
     </div>
 </div>
 <?php
-if (isset($_POST['login_username']) & isset($_POST['login_password'])) {
+if (isset($_POST['login_username'], $_POST['login_password'])) {
     $user = new User($_POST['login_username'], $_POST['login_password']);
     $user->Login();
 }

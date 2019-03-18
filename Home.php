@@ -13,11 +13,11 @@ Session::Start();
 </head>
 <body>
 <div class="container">
-    <div class="row">
+    <div class="row" style="margin-top:0.5em;">
         <div class="col-md-8">
-            <h3>Home</h3>
+            <h2>Home</h2>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 text-right">
             <?php
             if (Session::LoginStatus()) {
                 ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
@@ -32,12 +32,24 @@ Session::Start();
             ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row" style="margin-top:0.5em;">
+        <div class="col-md-8">
             <h4>Producten</h4>
         </div>
+        <div class="col-md-4 text-right">
+            <form type="get">
+                <div class="input-group md-form form-sm form-2 pl-0">
+                    <input name="search" class="form-control my-0 py-1 amber-border" type="text" placeholder="Zoek producten" aria-label="Search" required>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top:0.5em;">
         <div class="col-md-12">
             <?php
             Utility::FetchCategoryButtons();
@@ -47,16 +59,27 @@ Session::Start();
     <div class="row">
         <?php
         if (isset($_GET['category']) && (!empty($_GET['category']))) {
+            // Only category filter.
             Products::Display(Products::Fetch($_GET['category']));
-        } else {
+        } elseif (isset($_GET['search']) && (!empty($_GET['search']))) {
+            // Only search filter.
+            Products::Display(Products::Fetch(null, $_GET['search']));
+        } elseif (isset($_GET['category']) && (!empty($_GET['category'])) && (isset($_GET['search']) && (!empty($_GET['search'])))) {
+            // Both category and search filter.
+            Products::Display(Products::Fetch($_GET['category'], $_GET['search']));
+            }
+        else {
+            // No filter.
             Products::Display(Products::Fetch());
         }
         ?>
     </div>
-    <div class="row">
-        <div class="col-md-12" style="margin-top:0.5em;">
+    <div class="row" style="margin-top:0.5em;">
+        <div class="col-md-12">
             <h4>Winkelmand</h4>
         </div>
+    </div>
+    <div class="row" style="margin-top:0.5em;">
         <div class="col-md-12">
             <?php
             // Add item.
@@ -64,7 +87,7 @@ Session::Start();
                 Cart::AddItem($_GET['add_product_id'], $_GET['add_product_name'], $_GET['add_product_price'], $_GET['add_product_quantity']);
             }
 
-            // Remove item.
+            // Edit item quantity.
             if (isset($_GET['edit_quantity_product_id']) && $_GET['edit_product_quantity']) {
                 Cart::EditQuantity($_GET['edit_quantity_product_id'], $_GET['edit_product_quantity']);
             }
