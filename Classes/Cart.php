@@ -3,12 +3,12 @@
 /**
  * Class ShoppingCart
  */
-class ShoppingCart
+class Cart
 {
     /**
      * Displays shopping cart inventory.
      */
-    public static function DisplayInventory()
+    public static function Display()
     {
         if (isset($_SESSION['shopping_cart_inventory']) && (!empty($_SESSION['shopping_cart_inventory']))) {
             ?>
@@ -18,7 +18,7 @@ class ShoppingCart
                     <th scope='col'>Product</th>
                     <th scope='col'>Prijs</th>
                     <th scope='col'>Aantal</th>
-                    <th scope='col'><a href='EmptyShoppingCart.php'><i class=\"far fa-trash-alt\"></i> Alles</a></th>
+                    <th scope='col'><a href='?empty_cart=1'><i class="far fa-trash-alt"></i> Alles</a></th>
                 </tr>
                 <tbody>
                 <?php
@@ -31,24 +31,27 @@ class ShoppingCart
                         echo "<td> € " . number_format($val = ($item['product_price'] * $item['product_quantity']), 2) . "</td>";
                         ?>
                         <td>
-                            <form method="GET" action="EditQuantityShoppingCart.php">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <input type="hidden" name="edit_quantity_product_id"
-                                               value="<?php echo $item['product_id'] ?>">
-                                        <input class="form-control" style="max-width:4.5em;" type="number" min="1"
-                                               name="edit_product_quantity"
-                                               value="<?php echo $item['product_quantity'] ?>"required>
-                                    </div>
-                                    <div class=" form-group text-right">
-                                        <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i>
-                                        </button>
-                                    </div>
+                            <form method="GET"
+                            ">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="hidden" name="edit_quantity_product_id"
+                                           value="<?php echo $item['product_id'] ?>">
+                                    <input class="form-control" style="max-width:4.5em;" type="number" min="1"
+                                           name="edit_product_quantity"
+                                           value="<?php echo $item['product_quantity'] ?>" required>
                                 </div>
+                                <div class=" form-group text-right">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i>
+                                    </button>
+                                </div>
+                            </div>
                             </form>
                         </td>
+                        <td><a href="?remove_product_id=<?php echo $item['product_id'] ?> "><i style="color: black;"
+                                                                                               class="far fa-trash-alt"></i></a>
+                        </td>
                         <?php
-                        echo "<td><a href='RemoveFromShoppingCart.php?remove_product_id=" . $item['product_id'] . "'><i style='color: black;' class=\"far fa-trash-alt\"></i></a></td>";
                     }
                     echo "</tr>";
                 }
@@ -79,7 +82,7 @@ class ShoppingCart
      *
      *  Adds product if new to shopping cart, updates quantity if known.
      */
-    public static function Add($product_id, $product_name, $product_price, $product_quantity)
+    public static function AddItem($product_id, $product_name, $product_price, $product_quantity)
     {
         if (!isset($_SESSION['shopping_cart_inventory'])) {
             $_SESSION['shopping_cart_inventory'] = array();
@@ -93,47 +96,34 @@ class ShoppingCart
                 'product_quantity' => $product_quantity
             );
 
-            $item_exists = self::checkCartForItem($product_id, $_SESSION['shopping_cart_inventory']);
+            $item_exists = self::CheckForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($item_exists !== false) {
                 $_SESSION['shopping_cart_inventory'][$item_exists]['product_quantity'] = $product_quantity + $_SESSION['shopping_cart_inventory'][$item_exists]['product_quantity'];
             } else {
                 $_SESSION['shopping_cart_inventory'][] = $new_item;
             }
-            header('Location: ' . $_SERVER['PHP_SELF']);
-            die;
         }
     }
 
     /**
-     * @param $product_id
-     *  int Product id.
+     * @param $cart_product_id
+     *  int Product id of item to check for.
+     * @param $cart_items
+     *  array List of arrays with items.
+     * @return bool|int|string
      *
-     *  Removes item from cart.
+     *  Checks shopping cart for item according to product_id.
      */
-    public static function Remove($product_id)
+    public static function CheckForItem($cart_product_id, $cart_items)
     {
-        if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
-            $itemExists = self::checkCartForItem($product_id, $_SESSION['shopping_cart_inventory']);
-
-            if ($itemExists !== false) {
-                unset($_SESSION['shopping_cart_inventory'][$itemExists]);
+        if (is_array($cart_items)) {
+            foreach ($cart_items as $key => $item) {
+                if ($item['product_id'] === $cart_product_id)
+                    return $key;
             }
         }
-        header('Location: Home.php');
-        die;
-    }
-
-    /**
-     * Empties shopping cart.
-     */
-    public static function EmptyCart()
-    {
-        if (isset($_SESSION['shopping_cart_inventory'])) {
-            unset($_SESSION['shopping_cart_inventory']);
-        }
-        header('Location: Home.php');
-        die;
+        return false;
     }
 
     /**
@@ -147,33 +137,38 @@ class ShoppingCart
     public static function EditQuantity($product_id, $new_product_quantity)
     {
         if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
-            $itemExists = self::checkCartForItem($product_id, $_SESSION['shopping_cart_inventory']);
+            $itemExists = Cart::CheckForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($itemExists !== false) {
                 $_SESSION['shopping_cart_inventory'][$itemExists]['product_quantity'] = $new_product_quantity;
             }
         }
-        header('Location: Home.php');
-        die;
     }
 
     /**
-     * @param $cart_product_id
-     *  int Product id of item to check for.
-     * @param $cart_items
-     *  array List of arrays with items.
-     * @return bool|int|string
-     *
-     *  Checks shopping cart for item according to product_id.
+     * Empties shopping cart.
      */
-    protected static function checkCartForItem($cart_product_id, $cart_items)
+    public static function EmptyCart()
     {
-        if (is_array($cart_items)) {
-            foreach ($cart_items as $key => $item) {
-                if ($item['product_id'] === $cart_product_id)
-                    return $key;
+        if (isset($_SESSION['shopping_cart_inventory'])) {
+            unset($_SESSION['shopping_cart_inventory']);
+        }
+    }
+
+    /**
+     * @param $product_id
+     *  int Product id.
+     *
+     *  Removes item from cart.
+     */
+    public static function RemoveItem($product_id)
+    {
+        if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
+            $itemExists = Cart::CheckForItem($product_id, $_SESSION['shopping_cart_inventory']);
+
+            if ($itemExists !== false) {
+                unset($_SESSION['shopping_cart_inventory'][$itemExists]);
             }
         }
-        return false;
     }
 }

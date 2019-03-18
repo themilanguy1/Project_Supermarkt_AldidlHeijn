@@ -9,7 +9,7 @@ class User
      * @var
      * string Username.
      */
-    protected $user;
+    protected $user_name;
 
     /**
      * @var
@@ -18,86 +18,89 @@ class User
     protected $pass;
 
     /**
+     * @var
+     *  string Email address.
+     */
+    protected $email;
+
+    /**
      * User constructor.
-     * @param $input_user
-     * @param $input_pass
+     * @param $user_name
+     * @param $pass
+     * @param $email
      */
-    public function __construct($input_user, $input_pass)
+    public function __construct($user_name, $pass, $email = null)
     {
-        $this->user = $input_user;
-        $this->pass = $input_pass;
+        $this->user_name = $user_name;
+        $this->pass = $pass;
+        $this->email = $email;
     }
 
     /**
-     * Logs user out and redirects to Home.php .
+     * Checks input data at login screen against user table, sets session username variable and/or admin status variable.
      */
-    public static function LogOut()
+    public function Login()
     {
-        session_start();
-        if (User::LoginStatus()) {
-            session_destroy();
+        if (!empty($this->user_name) && !empty($this->pass)) {
+            $conn = Utility::PDOConnect();
+
+            $admin_check_query = $conn->prepare("select * from gebruikers where gebruiker_gebruikersnaam=? and gebruiker_admin_status = 1");
+            $admin_check_query->bindParam(1, $this->user_name);
+            $admin_check_query->execute();
+
+            if ($admin_check_query->rowCount() == 1) {
+                $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_gebruikersnaam = '$this->user_name'";
+                $stmt = $conn->prepare($sql_pass);
+                $stmt->execute();
+                $row = $stmt->fetch();
+
+                if (Utility::VerifyEncryptedPassword($this->pass, $row['gebruiker_wachtwoord'])) {
+                    $_SESSION['login_user'] = $this->user_name;
+                    $_SESSION['login_admin_status'] = true;
+                    $_SESSION['login_status'] = true;
+                    header('Location: Home.php');
+                    die;
+                } else {
+                    echo "Onjuiste inlog informatie";
+                }
+            } else {
+                $db_query = $conn->prepare("select * from gebruikers where gebruiker_gebruikersnaam=?");
+                $db_query->bindParam(1, $this->user_name);
+                $db_query->execute();
+
+                if ($db_query->rowCount() == 1) {
+                    $sql_pass = "SELECT gebruiker_wachtwoord FROM gebruikers WHERE gebruiker_gebruikersnaam = '$this->user_name'";
+                    $stmt = $conn->prepare($sql_pass);
+                    $stmt->execute();
+                    $row = $stmt->fetch();
+
+                    if (Utility::VerifyEncryptedPassword($this->pass, $row['gebruiker_wachtwoord'])) {
+                        $_SESSION['login_user'] = $this->user_name;
+                        $_SESSION['login_status'] = true;
+                        header('Location: Home.php');
+                        die;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Registers new user in database.
+     */
+    public function Register()
+    {
+        if (!empty($this->email) && !empty($this->user_name) && !empty($this->pass)) {
+            $conn = Utility::PDOConnect();
+            $new_id = Utility::GetNewUserId();
+            $hashed_pass = Utility::EncryptPassword($this->pass);
+
+            $stmt = $conn->prepare("INSERT INTO gebruikers (gebruiker_id, gebruiker_email, gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?, ?)");
+            $stmt->execute([$new_id, $this->email, $this->user_name, $hashed_pass, $admin_status = 0]);
             header('Location: Home.php');
             die;
         } else {
-            header('Location: Home.php');
-            die;
-        }
-    }
-
-    /**
-     * @return bool
-     *
-     * Checks login status.
-     */
-    public static function LoginStatus()
-    {
-        if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return bool
-     *
-     * Checks admin status.
-     *
-     */
-    public static function AdminStatus()
-    {
-        if (isset($_SESSION['login_admin_status']) && $_SESSION['login_admin_status'] == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param $pass
-     * @return mixed
-     *
-     * Encrypts passwords.
-     */
-    public static function EncryptPassword($pass)
-    {
-        $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
-        return $hashed_pass;
-    }
-
-    /**
-     * @param $pass
-     * @param $hashed_pass
-     * @return bool
-     *
-     * Verifies encrypted passwords.
-     */
-    protected static function VerifyEncryptedPassword($pass, $hashed_pass)
-    {
-        if (password_verify($pass, $hashed_pass)) {
-            return true;
-        } else {
-            return false;
+            echo "input parameter mist.";
         }
     }
 }

@@ -25,13 +25,13 @@
  */
 
 /**
- * Simple Recursive Autoloader
+ * Simple Recursive ClassLoader
  *
  * A simple autoloader that loads class files recursively starting in the directory
  * where this class resides.  Additional options can be provided to control the naming
  * convention of the class files.
  *
- * @package Autoloader
+ * @package ClassLoader
  * @license http://opensource.org/licenses/MIT  MIT License
  * @author  Rob Dunham <contact@robunham.info>
  */

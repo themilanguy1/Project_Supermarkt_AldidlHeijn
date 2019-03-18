@@ -1,6 +1,6 @@
 <?php
 require_once('Classes/Autoloader.php');
-Session::SessionStart();
+Session::Start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +19,7 @@ Session::SessionStart();
         </div>
         <div class="col-md-4">
             <?php
-            if (User::LoginStatus()) {
+            if (Session::LoginStatus()) {
                 ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
                 ?> <a href="Home.php" class="btn btn-primary">Home</a> <?php
             } else {

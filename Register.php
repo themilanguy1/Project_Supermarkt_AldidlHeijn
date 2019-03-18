@@ -1,6 +1,6 @@
 <?php
 require_once('Classes/Autoloader.php');
-Session::SessionStart();
+Session::Start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,7 @@ Session::SessionStart();
     <div class="row">
         <div class="col-md-4">
             <?php
-            if (User::LoginStatus()) {
+            if (Session::LoginStatus()) {
                 ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
             } else {
                 ?> <a href="Login.php" class="btn btn-primary">Log in</a> <?php
@@ -64,7 +64,8 @@ Session::SessionStart();
 <?php
 if (isset($_POST['register_email']) & isset($_POST['register_username']) & isset($_POST['register_password']) & isset($_POST['register_password_check'])) {
     if ($_POST['register_password'] == $_POST['register_password_check']) {
-        $user_registration = new UserRegister($_POST['register_email'], $_POST['register_username'], $_POST['register_password']);
+        $user = new User($_POST['register_username'], $_POST['register_password'], $_POST['register_email']);
+        $user->Register();
     } else {
         echo "Uw ingevulde wachtwoorden komen niet overeen.";
     }
