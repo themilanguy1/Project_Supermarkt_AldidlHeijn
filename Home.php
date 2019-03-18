@@ -37,7 +37,7 @@ Session::Start();
             <h4>Producten</h4>
         </div>
         <div class="col-md-4 text-right">
-            <form type="get">
+            <form method="get">
                 <div class="input-group md-form form-sm form-2 pl-0">
                     <input name="search" class="form-control my-0 py-1 amber-border" type="text" placeholder="Zoek producten" aria-label="Search" required>
                     <div class="input-group-append">

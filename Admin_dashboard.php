@@ -13,11 +13,11 @@ Session::Start();
 </head>
 <body>
 <div class="container">
-    <div class="row">
+    <div class="row" style="margin-top:0.5em;">
         <div class="col-md-8">
-            <h3>Admin dashboard</h3>
+            <h2>Admin dashboard</h2>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 text-right">
             <?php
             if (Session::LoginStatus()) {
                 ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
