@@ -1,6 +1,6 @@
 <?php
 require_once('Classes/Autoloader.php');
-Session::Start();
+Session::start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,9 +19,9 @@ Session::Start();
         </div>
         <div class="col-md-4 text-right">
             <?php
-            if (Session::LoginStatus()) {
+            if (Session::loginStatus()) {
                 ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
-                if (Session::AdminStatus()) {
+                if (Session::adminStatus()) {
                     ?> <a href="Admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a> <?php
                 } else {
                     ?> <a href="User_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a> <?php
@@ -52,7 +52,7 @@ Session::Start();
     <div class="row" style="margin-top:0.5em;">
         <div class="col-md-12">
             <?php
-            Utility::FetchCategoryButtons();
+            Utility::showCategoryButtons();
             ?>
         </div>
     </div>
@@ -60,17 +60,17 @@ Session::Start();
         <?php
         if (isset($_GET['category']) && (!empty($_GET['category']))) {
             // Only category filter.
-            Products::Display(Products::Fetch($_GET['category']));
+            Products::displayProducts(Products::fetchProducts($_GET['category']));
         } elseif (isset($_GET['search']) && (!empty($_GET['search']))) {
             // Only search filter.
-            Products::Display(Products::Fetch(null, $_GET['search']));
+            Products::displayProducts(Products::fetchProducts(null, $_GET['search']));
         } elseif (isset($_GET['category']) && (!empty($_GET['category'])) && (isset($_GET['search']) && (!empty($_GET['search'])))) {
             // Both category and search filter.
-            Products::Display(Products::Fetch($_GET['category'], $_GET['search']));
+            Products::displayProducts(Products::fetchProducts($_GET['category'], $_GET['search']));
             }
         else {
             // No filter.
-            Products::Display(Products::Fetch());
+            Products::displayProducts(Products::fetchProducts());
         }
         ?>
     </div>
@@ -84,25 +84,25 @@ Session::Start();
             <?php
             // Add item.
             if (isset($_GET['add_product_id'], $_GET['add_product_name'], $_GET['add_product_price'], $_GET['add_product_quantity'])) {
-                Cart::AddItem($_GET['add_product_id'], $_GET['add_product_name'], $_GET['add_product_price'], $_GET['add_product_quantity']);
+                Cart::addItem($_GET['add_product_id'], $_GET['add_product_name'], $_GET['add_product_price'], $_GET['add_product_quantity']);
             }
 
             // Edit item quantity.
             if (isset($_GET['edit_quantity_product_id']) && $_GET['edit_product_quantity']) {
-                Cart::EditQuantity($_GET['edit_quantity_product_id'], $_GET['edit_product_quantity']);
+                Cart::editQuantity($_GET['edit_quantity_product_id'], $_GET['edit_product_quantity']);
             }
 
             // Remove item.
             if (isset($_GET['remove_product_id'])) {
-                Cart::RemoveItem($_GET['remove_product_id']);
+                Cart::removeItem($_GET['remove_product_id']);
             }
 
             // Empty cart.
             if (isset($_GET['empty_cart'])) {
-                Cart::EmptyCart();
+                Cart::emptyCart();
             }
 
-            Cart::Display();
+            Cart::display();
             ?>
         </div>
     </div>

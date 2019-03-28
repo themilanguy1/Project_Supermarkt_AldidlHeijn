@@ -8,7 +8,7 @@ class Session
     /**
      * Starts session if not already started.
      */
-    public static function Start()
+    public static function start()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -18,10 +18,10 @@ class Session
     /**
      * Logs user out and redirects to Home.php .
      */
-    public static function LogOut()
+    public static function logOut()
     {
         session_start();
-        if (Session::LoginStatus()) {
+        if (Session::loginStatus()) {
             session_destroy();
             header('Location: Home.php');
             die;
@@ -36,7 +36,7 @@ class Session
      *
      * Checks login status.
      */
-    public static function LoginStatus()
+    public static function loginStatus()
     {
         if (isset($_SESSION['login_status']) && $_SESSION['login_status'] == true) {
             return true;
@@ -51,7 +51,7 @@ class Session
      * Checks admin status.
      *
      */
-    public static function AdminStatus()
+    public static function adminStatus()
     {
         if (isset($_SESSION['login_admin_status']) && $_SESSION['login_admin_status'] == true) {
             return true;

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class ShoppingCart
+ * Class Cart
  */
 class Cart
 {
     /**
      * Displays shopping cart inventory.
      */
-    public static function Display()
+    public static function display()
     {
         if (isset($_SESSION['shopping_cart_inventory']) && (!empty($_SESSION['shopping_cart_inventory']))) {
             ?>
@@ -79,7 +79,7 @@ class Cart
      *
      *  Checks shopping cart for item according to product_id.
      */
-    public static function CheckForItem($cart_product_id, $cart_items)
+    public static function checkForItem($cart_product_id, $cart_items)
     {
         if (is_array($cart_items)) {
             foreach ($cart_items as $key => $item) {
@@ -102,7 +102,7 @@ class Cart
      *
      *  Adds product if new to shopping cart, updates quantity if known.
      */
-    public static function AddItem($product_id, $product_name, $product_price, $product_quantity)
+    public static function addItem($product_id, $product_name, $product_price, $product_quantity)
     {
         if (!isset($_SESSION['shopping_cart_inventory'])) {
             $_SESSION['shopping_cart_inventory'] = array();
@@ -116,7 +116,7 @@ class Cart
                 'product_quantity' => $product_quantity
             );
 
-            $item_exists = self::CheckForItem($product_id, $_SESSION['shopping_cart_inventory']);
+            $item_exists = self::checkForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($item_exists !== false) {
                 $_SESSION['shopping_cart_inventory'][$item_exists]['product_quantity'] = $product_quantity + $_SESSION['shopping_cart_inventory'][$item_exists]['product_quantity'];
@@ -134,10 +134,10 @@ class Cart
      *
      *  Edits quantity of item in cart.
      */
-    public static function EditQuantity($product_id, $new_product_quantity)
+    public static function editQuantity($product_id, $new_product_quantity)
     {
         if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
-            $itemExists = Cart::CheckForItem($product_id, $_SESSION['shopping_cart_inventory']);
+            $itemExists = Cart::checkForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($itemExists !== false) {
                 $_SESSION['shopping_cart_inventory'][$itemExists]['product_quantity'] = $new_product_quantity;
@@ -151,10 +151,10 @@ class Cart
      *
      *  Removes item from cart.
      */
-    public static function RemoveItem($product_id)
+    public static function removeItem($product_id)
     {
         if (!(empty($product_id)) && isset($_SESSION['shopping_cart_inventory'])) {
-            $itemExists = Cart::CheckForItem($product_id, $_SESSION['shopping_cart_inventory']);
+            $itemExists = Cart::checkForItem($product_id, $_SESSION['shopping_cart_inventory']);
 
             if ($itemExists !== false) {
                 unset($_SESSION['shopping_cart_inventory'][$itemExists]);
@@ -165,7 +165,7 @@ class Cart
     /**
      * Empties shopping cart.
      */
-    public static function EmptyCart()
+    public static function emptyCart()
     {
         if (isset($_SESSION['shopping_cart_inventory'])) {
             unset($_SESSION['shopping_cart_inventory']);

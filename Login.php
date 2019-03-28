@@ -1,6 +1,6 @@
 <?php
 require_once('Classes/Autoloader.php');
-Session::Start();
+Session::start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@ Session::Start();
 <?php
 if (isset($_POST['login_username'], $_POST['login_password'])) {
     $user = new User($_POST['login_username'], $_POST['login_password']);
-    $user->Login();
+    $user->login();
 }
 ?>
 </body>

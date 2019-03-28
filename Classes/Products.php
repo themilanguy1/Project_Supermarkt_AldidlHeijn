@@ -14,16 +14,16 @@ class Products
      *
      * Fetches products from database according to category/search filter, displays products.
      */
-    public static function Fetch($category = null, $search = null)
+    public static function fetchProducts($category = null, $search = null)
     {
-        $conn = Utility::PDOConnect();
-        $category_filter = Products::GetCategoryFilter($category);
-        $search_filter = Products::GetSearchFilter($search);
+        $conn = Utility::pdoConnect();
+        $category_filter = Products::getCategoryFilter($category);
+        $search_filter = Products::getSearchFilter($search);
         $data = $conn->query("SELECT * FROM producten, categorie WHERE producten.categorie_id = categorie.categorie_id $category_filter $search_filter")->fetchAll(PDO::FETCH_ASSOC);;
         return $data;
     }
 
-    public static function Display($data)
+    public static function displayProducts($data)
     {
         foreach ($data as $row) {
             ?>
@@ -41,7 +41,7 @@ class Products
                         <form method="GET">
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                    <input type="hidden" name="add_product_id" value=<?php echo $row['product_id'] ?> >
+                                    <input type="hidden" name="add_product_id" value=<?php echo $row['product_id'] ?>>
                                     <input type="hidden" name="add_product_name"
                                            value="<?php echo $row['product_naam'] ?>">
                                     <input type="hidden" name="add_product_price"
@@ -69,7 +69,7 @@ class Products
      *
      *  Returns SQL code to filter by category.
      */
-    public static function GetCategoryFilter($category)
+    public static function getCategoryFilter($category)
     {
         if (!empty($category)) {
             // Create category filter.
@@ -87,7 +87,7 @@ class Products
      *
      *  Returns SQL code to filter by search.
      */
-    public static function GetSearchFilter($search)
+    public static function getSearchFilter($search)
     {
         if (!empty($search)) {
             // Create category filter.

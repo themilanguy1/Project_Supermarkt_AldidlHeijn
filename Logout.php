@@ -1,4 +1,4 @@
 <?php
 require_once('Classes/Autoloader.php');
-Session::Start();
-Session::LogOut();
+Session::start();
+Session::logOut();
