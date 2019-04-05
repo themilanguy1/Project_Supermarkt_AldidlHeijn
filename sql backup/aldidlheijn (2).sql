@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 09 mrt 2019 om 13:34
--- Serverversie: 10.1.28-MariaDB
--- PHP-versie: 7.1.11
+-- Gegenereerd op: 05 apr 2019 om 09:57
+-- Serverversie: 10.1.29-MariaDB
+-- PHP-versie: 7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -75,8 +75,8 @@ CREATE TABLE `gebruikers` (
 --
 
 INSERT INTO `gebruikers` (`gebruiker_id`, `gebruiker_gebruikersnaam`, `gebruiker_email`, `gebruiker_wachtwoord`, `gebruiker_admin_status`) VALUES
-(1, 'admin', 'milan.gupta@ymail.com', '$2y$10$FcrWDdDBFQ98NfeSLDQ3IeQ.CRCuN1ze.zGb5Ho.Jch3MxKy8jyVm', 1),
-(2, 'milan', 'milan.gupta@ymail.com', '$2y$10$7hKz8pI6qTD8G9J32GsqFukZ3/QOGfuZw30zgK2IQSBCJWmf5isT2', 0);
+(1, 'admin', 'milan.gupta@ymail.com', '$2y$10$f63bF5hmqFsfqNwVrZfJ5Oz.nTv0BH8LpS9OCLhDnXQ5BBzJ1z28S', 1),
+(2, 'milan12', 'milan.gupta@ymail.com', '$2y$10$.MO1DyQ5HYNEZ5bFDRTK9O0oEWOUjaLJhlxuQC3xyazOYZgnBQbPG', 0);
 
 -- --------------------------------------------------------
 
