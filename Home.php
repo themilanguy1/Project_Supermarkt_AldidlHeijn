@@ -14,15 +14,15 @@ Session::start();
 <body>
 <div class="container">
     <div class="row" style="margin-top:0.5em;">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <h2>Home</h2>
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-md-5 text-right">
             <?php
             if (Session::loginStatus()) {
                 ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
                 if (Session::adminStatus()) {
-                    ?> <a href="Admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a> <?php
+                    ?> <a href="admin_dashboard/index.php" class="btn btn-primary">Admin Dashboard</a> <?php
                 } else {
                     ?> <a href="User_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a> <?php
                 }

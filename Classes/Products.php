@@ -28,12 +28,12 @@ class Products
         foreach ($data as $row) {
             ?>
             <div class='col-md-4' xmlns="http://www.w3.org/1999/html">
-                <div class="card mx-auto" style="min-height: 18em; min-width: 18em; margin-top: 0.5em;">
+                <div class="card mx-auto" style="min-height: 15em; max-height: 22em; min-width: 14em; margin-top: 0.5em;">
                     <img class="card-img-top align-self-center" alt="<?php $row['product_naam'] ?>"
                          src=" <?php echo $row['product_afbeelding'] ?> "
                          style="width:60px;height:60px; margin: 1em;">
                     <div class="card-body">
-                        <h5 class="card-title" style="height: 3em;"> <?php echo $row['product_naam'] ?> </h5>
+                        <h5 class="card-title" style="max-height: 2em;"> <?php echo $row['product_naam'] ?> </h5>
                         <div style="min-height: 3em;">
                             <?php echo "<p>Categorie: <a href='?category=" . $row['categorie_naam'] . "'>" . $row['categorie_naam'] . "</a></p>" ?>
                         </div>
