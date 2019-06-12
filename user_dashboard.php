@@ -1,6 +1,6 @@
 <?php
-require_once('classes/Autoloader.php');
-Session::start();
+	require_once('classes/Autoloader.php');
+	Session::start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,15 +18,15 @@ Session::start();
             <h2>Gebruiker dashboard</h2>
         </div>
         <div class="col-md-4 text-right">
-            <?php
-            if (Session::loginStatus()) {
-                ?> <a href="logout.php" class="btn btn-primary">Log uit</a> <?php
-                ?> <a href="home.php" class="btn btn-primary">Home</a> <?php
-            } else {
-                header('Location: home.php');
-                die;
-            }
-            ?>
+			<?php
+				if (Session::loginStatus()) {
+					?> <a href="home.php" class="btn btn-primary">Home</a>
+                    <a href="logout.php" class="btn btn-primary">Log uit</a> <?php
+				} else {
+					header('Location: home.php');
+					die;
+				}
+			?>
         </div>
     </div>
 </div

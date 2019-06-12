@@ -1,6 +1,6 @@
 <?php
-require_once('classes/Autoloader.php');
-Session::start();
+	require_once('classes/Autoloader.php');
+	Session::start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,15 +47,15 @@ Session::start();
     </div>
 </div>
 <?php
-if (isset($_POST['login_username'], $_POST['login_password'])) {
-    $user = new User($_POST['login_username'], $_POST['login_password']);
-    $user->login();
-    if ($user->login()) {
-	    header('Location: home.php');
-    } else {
-	    echo "<h4>Gebruikersnaam of wachtwoord is onjuist.</h4>";
-    }
-}
+	if (isset($_POST['login_username'], $_POST['login_password'])) {
+		$user = new User($_POST['login_username'], $_POST['login_password']);
+		$user->login();
+		if ($user->login()) {
+			header('Location: home.php');
+		} else {
+			echo "<h4>Gebruikersnaam of wachtwoord is onjuist.</h4>";
+		}
+	}
 ?>
 </body>
 </html>
