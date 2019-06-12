@@ -1,5 +1,5 @@
 <?php
-require_once('Classes/Autoloader.php');
+require_once('classes/Autoloader.php');
 Session::start();
 ?>
 <!DOCTYPE html>
@@ -20,10 +20,10 @@ Session::start();
         <div class="col-md-4 text-right">
             <?php
             if (Session::loginStatus()) {
-                ?> <a href="Logout.php" class="btn btn-primary">Log uit</a> <?php
-                ?> <a href="Home.php" class="btn btn-primary">Home</a> <?php
+                ?> <a href="logout.php" class="btn btn-primary">Log uit</a> <?php
+                ?> <a href="home.php" class="btn btn-primary">Home</a> <?php
             } else {
-                header('Location: Home.php');
+                header('Location: home.php');
                 die;
             }
             ?>

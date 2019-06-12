@@ -66,13 +66,12 @@ class User
                     } else {
                         $_SESSION['login_admin_status'] = false;
                     }
-                    header('Location: Home.php');
-                    die;
+                    return true;
                 } else {
-                    echo "<h4>Gebruikersnaam of wachtwoord is onjuist.</h4>";
+                    return false;
                 }
             } else {
-                echo "<h4>Gebruikersnaam of wachtwoord is onjuist.</h4>";
+                return false;
             }
         }
     }
@@ -96,7 +95,7 @@ class User
             $register->bindParam(5, $register_admin_status);
             $register->execute();
 
-            header('Location: Home.php');
+            header('Location: home.php');
             die;
         } else {
             echo "input parameter mist.";

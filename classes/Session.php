@@ -16,18 +16,15 @@ class Session
     }
 
     /**
-     * Logs user out and redirects to Home.php .
+     * Logs user out and redirects to home.php .
      */
     public static function logOut()
     {
-        session_start();
         if (Session::loginStatus()) {
             session_destroy();
-            header('Location: Home.php');
-            die;
+            return true;
         } else {
-            header('Location: Home.php');
-            die;
+            return false;
         }
     }
 

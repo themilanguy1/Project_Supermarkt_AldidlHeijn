@@ -1,5 +1,5 @@
 <?php
-require_once('Classes/Autoloader.php');
+require_once('classes/Autoloader.php');
 Session::start();
 ?>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ Session::start();
 <div class="container">
     <div class="row">
         <div class="col-md-4">
-            <a href="Home.php" class="btn btn-primary">Home</a>
+            <a href="home.php" class="btn btn-primary">Home</a>
         </div>
         <div class="col-md-8">
 
@@ -38,7 +38,7 @@ Session::start();
 
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
                     <br>
-                    <a href="Register.php">
+                    <a href="register.php">
                         <button class="btn btn-lg btn-primary btn-block" type="button">Registreren</button>
                     </a>
                 </form>
@@ -50,6 +50,11 @@ Session::start();
 if (isset($_POST['login_username'], $_POST['login_password'])) {
     $user = new User($_POST['login_username'], $_POST['login_password']);
     $user->login();
+    if ($user->login()) {
+	    header('Location: home.php');
+    } else {
+	    echo "<h4>Gebruikersnaam of wachtwoord is onjuist.</h4>";
+    }
 }
 ?>
 </body>
