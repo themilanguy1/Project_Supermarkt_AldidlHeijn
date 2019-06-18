@@ -37,10 +37,38 @@
         </div>
         <div class="col-md-12">
 			<?php
-			    if (Order::displayInvoice($_SESSION['shopping_cart_inventory'])) {
-			        echo "<a class='btn btn-primary' href='delivery_options.php'> > Verder naar bestellen</a>";
-                }
-            ?>
+				if (isset($_SESSION['shopping_cart_inventory'])) {
+					if (Order::displayInvoice($_SESSION['shopping_cart_inventory'])) {
+						?>
+                        <form method="get">
+                            <input class="form-control" name="coupon_code" placeholder="Vul kortingscode in"
+                                   type="text">
+                            <button type="submit" class="btn btn-primary">Activeren</button>
+                        </form>
+                        <br>
+                        <form method="post">
+                            <div class="form-group">
+                                Bezorgen of afhalen? <br>
+                                <input checked type="radio" name="delivery" value="home_delivery_address">Thuis bezorgen<br>
+                                <input type="radio" name="delivery" value="">Ophalen bij <input type="text" placeholder="bijv. Bruna Zuidplein" name="alternative_delivery_address" />​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+
+                                <?php
+                                    // TODO place order.
+                                ?>
+                                <input type="hidden" name="total_plus_btw">
+                                <input type="hidden" name="">
+                                <input type="hidden" name="">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary"> > plaats bestelling</button>
+                            </div>
+                        </form>
+						<?php
+					}
+				} else {
+					echo "<p>U heeft geen producten in uw winkelmand.</p>";
+				}
+			?>
         </div>
     </div>
 </div>

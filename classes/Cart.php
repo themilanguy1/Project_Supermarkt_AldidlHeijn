@@ -28,9 +28,10 @@
                     </tr>
                     <tbody>
 					<?php
-						$total_price = 0;
+                        $total = 0;
 						foreach ($_SESSION['shopping_cart_inventory'] as $item) {
-							$total_price = ($total_price + ($item['product_price'] * $item['product_quantity']));
+							$total = number_format(($total + ($item['product_price'] * $item['product_quantity'])), 2);
+							$price_per_product = number_format($val = ($item['product_price'] * $item['product_quantity']), 2);
 							echo "<tr>";
 							if (is_array($item) || is_object($item)) {
 								echo "<td>" . $item['product_name'] . "</td>";
@@ -53,7 +54,7 @@
                                     </div>
                                     </form>
                                 </td>
-								<?php echo "<td> € " . number_format($val = ($item['product_price'] * $item['product_quantity']), 2) . "</td>"; ?>
+								<?php echo "<td> € " . $price_per_product . "</td>"; ?>
                                 <td><a href="?remove_product_id=<?php echo $item['product_id'] ?> "><i
                                                 style="color: black;"
                                                 class="far fa-trash-alt"></i></a>
@@ -67,7 +68,7 @@
                         <td><b>Totaal: </b></td>
                         <td></td>
                         <td></td>
-                        <td><b>€ <?php echo $total_price ?> </b></td>
+                        <td><b>€ <?php echo $total ?> </b></td>
                         <td><a class='btn btn-primary' href="<?= $button_link ?>"><?= $button_text ?></a></td>
                     </tr>
                     </tbody>
