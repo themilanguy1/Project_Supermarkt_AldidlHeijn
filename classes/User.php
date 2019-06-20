@@ -37,7 +37,10 @@
 		}
 		
 		/**
-		 * Checks input data at login screen against user table, sets session username variable and/or admin status variable.
+		 * @return bool
+		 *
+		 *  Checks input data at login screen against user table,
+		 *  sets session username variable and/or admin status variable.
 		 */
 		public function login()
 		{
@@ -77,17 +80,21 @@
 		}
 		
 		/**
-		 * Registers new user in database.
+		 * @return bool
+		 *
+		 *  Registers new user in database.
 		 */
 		public function register()
 		{
-			if (!empty($this->email) && !empty($this->user_name) && !empty($this->pass)) {
+			if (!User::doesUserNameExist($this->user_name)) {
 				$conn = Utility::pdoConnect();
 				$new_id = Utility::getNewUserId();
 				$hashed_pass = Utility::encryptPassword($this->pass);
 				$register_admin_status = 0;
 				
-				$register = $conn->prepare("INSERT INTO gebruikers (gebruiker_id, gebruiker_email, gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status) VALUES  (?, ?, ?, ?, ?)");
+				$register = $conn->prepare("INSERT INTO gebruikers (gebruiker_id, gebruiker_email,
+							gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status)
+							VALUES  (?, ?, ?, ?, ?)");
 				$register->bindParam(1, $new_id);
 				$register->bindParam(2, $this->email);
 				$register->bindParam(3, $this->user_name);
@@ -95,10 +102,34 @@
 				$register->bindParam(5, $register_admin_status);
 				$register->execute();
 				
-				header('Location: home.php');
-				die;
+				header("Location: home.php");
 			} else {
-				echo "input parameter mist.";
+				echo "<p>Gebruikersnaam bestaat al.</p>";
 			}
 		}
+		
+		/**
+		 * @param $user_name
+		 *  string User name.
+		 * @return bool
+		 *
+		 *  Returns true if user name exists, returns false if not.
+		 */
+		public static function doesUserNameExist($user_name)
+		{
+			$conn = Utility::pdoConnect();
+			
+			$check_user_name_query = $conn->prepare("SELECT gebruiker_gebruikersnaam FROM gebruikers
+																   WHERE gebruiker_gebruikersnaam = :user_name");
+			$check_user_name_query->bindParam("user_name", $user_name);
+			$check_user_name_query->execute();
+			
+			if ($check_user_name_query->rowCount() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		
 	}

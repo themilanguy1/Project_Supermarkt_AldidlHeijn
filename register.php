@@ -39,7 +39,7 @@
 
                     <div class="from-label-group">
                         <input name="register_username" type="text" id="inputUsername" class="form-control"
-                               placeholder="Vul uw gebruikersnaam in" required autofocus>
+                               placeholder="Vul een gebruikersnaam in" required autofocus>
                         <label for="inputEmail"></label>
                     </div>
 
@@ -66,6 +66,7 @@
 		if ($_POST['register_password'] == $_POST['register_password_check']) {
 			$user = new User($_POST['register_username'], $_POST['register_password'], $_POST['register_email']);
 			$user->register();
+
 		} else {
 			echo "Uw ingevulde wachtwoorden komen niet overeen.";
 		}

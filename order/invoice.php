@@ -46,7 +46,7 @@
                             <button type="submit" class="btn btn-primary">Activeren</button>
                         </form>
                         <br>
-                        <form method="post">
+                        <form method="post" action="../home.php?empty_cart=1">
                             <div class="form-group">
                                 Bezorgen of afhalen? <br>
                                 <input checked type="radio" name="delivery" value="home_delivery_address">Thuis bezorgen<br>
