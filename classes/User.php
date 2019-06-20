@@ -84,7 +84,7 @@
 		 */
 		public function register()
 		{
-			if(!User::doesEmailExist($this->email)) {
+			if (!User::doesEmailExist($this->email)) {
 				if (!User::doesUserNameExist($this->user_name)) {
 					$conn = Utility::pdoConnect();
 					$new_id = Utility::getNewUserId();
@@ -156,5 +156,59 @@
 			}
 		}
 		
+		/**
+		 * @return array
+		 *
+		 *  Fetches user data.
+		 */
+		public static function fetchUsers()
+		{
+			$conn = Utility::pdoConnect();
+			$user_data = $conn->query("SELECT * FROM gebruikers ")->fetchAll(PDO::FETCH_ASSOC);;
+			return $user_data;
+		}
 		
+		/**\
+		 * @param $user_data
+		 *
+		 *  Displays users.
+		 */
+		public static function displayUsers($user_data)
+		{
+			?>
+            <div class="container">
+                <div class='col-md-12'>
+                    <table class='table'>
+                        <thead class='thead-light'>
+                        <tr>
+                            <th scope='col'>Gebruikers id</th>
+                            <th scope='col'>Gebruikers naam</th>
+                            <th scope='col'>Gebruikers email</th>
+                            <th scope='col'>Gebruikers wachtwoord</th>
+                            <th scope='col'>Gebruikers admin_status</th>
+                            <th scope='col'>wijzig</th>
+                            <th scope='col'>verwijder</th>
+                        </tr>
+                        <tbody>
+						<?php foreach ($user_data as $row) : ?>
+                            <tr>
+                                <th scope='row'><?= $row['gebruiker_id'] ?></th>
+                                <td><?= $row['gebruiker_gebruikersnaam'] ?></td>
+                                <td><?= $row['gebruiker_email'] ?></td>
+                                <td><?= $row['gebruiker_wachtwoord'] ?></td>
+                                <td><?= $row['gebruiker_admin_status'] ?></td>
+                                <td><a href="<?= $row['gebruiker_id'] ?>">
+                                        Wijzig
+                                    </a></td>
+                                <td><a href="<?= $row['gebruiker_id'] ?>">
+                                        Verwijderen
+                                    </a></td>
+                            </tr>
+						<?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+			<?php
+		}
 	}

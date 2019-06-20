@@ -33,6 +33,12 @@
 				}
 			?>
         </div>
+        <div class="col-md-12">
+            <h4>Gebruikers:</h4>
+            <?php
+                User::displayUsers(User::fetchUsers());
+            ?>
+        </div>
     </div>
 </div
 </body>
