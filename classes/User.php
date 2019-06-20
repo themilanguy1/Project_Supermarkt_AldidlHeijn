@@ -80,31 +80,33 @@
 		}
 		
 		/**
-		 * @return bool
-		 *
 		 *  Registers new user in database.
 		 */
 		public function register()
 		{
-			if (!User::doesUserNameExist($this->user_name)) {
-				$conn = Utility::pdoConnect();
-				$new_id = Utility::getNewUserId();
-				$hashed_pass = Utility::encryptPassword($this->pass);
-				$register_admin_status = 0;
-				
-				$register = $conn->prepare("INSERT INTO gebruikers (gebruiker_id, gebruiker_email,
+			if(!User::doesEmailExist($this->email)) {
+				if (!User::doesUserNameExist($this->user_name)) {
+					$conn = Utility::pdoConnect();
+					$new_id = Utility::getNewUserId();
+					$hashed_pass = Utility::encryptPassword($this->pass);
+					$register_admin_status = 0;
+					
+					$register = $conn->prepare("INSERT INTO gebruikers (gebruiker_id, gebruiker_email,
 							gebruiker_gebruikersnaam, gebruiker_wachtwoord, gebruiker_admin_status)
 							VALUES  (?, ?, ?, ?, ?)");
-				$register->bindParam(1, $new_id);
-				$register->bindParam(2, $this->email);
-				$register->bindParam(3, $this->user_name);
-				$register->bindParam(4, $hashed_pass);
-				$register->bindParam(5, $register_admin_status);
-				$register->execute();
-				
-				header("Location: home.php");
+					$register->bindParam(1, $new_id);
+					$register->bindParam(2, $this->email);
+					$register->bindParam(3, $this->user_name);
+					$register->bindParam(4, $hashed_pass);
+					$register->bindParam(5, $register_admin_status);
+					$register->execute();
+					
+					header("Location: home.php");
+				} else {
+					echo "<p>Gebruikersnaam bestaat al.</p>";
+				}
 			} else {
-				echo "<p>Gebruikersnaam bestaat al.</p>";
+				echo "<p>Email adres bestaat al.</p>";
 			}
 		}
 		
@@ -113,7 +115,7 @@
 		 *  string User name.
 		 * @return bool
 		 *
-		 *  Returns true if user name exists, returns false if not.
+		 *  Returns true if user name & email address exist, false if not.
 		 */
 		public static function doesUserNameExist($user_name)
 		{
@@ -122,6 +124,29 @@
 			$check_user_name_query = $conn->prepare("SELECT gebruiker_gebruikersnaam FROM gebruikers
 																   WHERE gebruiker_gebruikersnaam = :user_name");
 			$check_user_name_query->bindParam("user_name", $user_name);
+			$check_user_name_query->execute();
+			
+			if ($check_user_name_query->rowCount() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		/**
+		 * @param $email
+		 *  string Email.
+		 * @return bool
+		 *
+		 *  Returns true if email exists, false if not.
+		 */
+		public static function doesEmailExist($email)
+		{
+			$conn = Utility::pdoConnect();
+			
+			$check_user_name_query = $conn->prepare("SELECT gebruiker_gebruikersnaam FROM gebruikers
+																   WHERE gebruiker_email = :email");
+			$check_user_name_query->bindParam("email", $email);
 			$check_user_name_query->execute();
 			
 			if ($check_user_name_query->rowCount() > 0) {

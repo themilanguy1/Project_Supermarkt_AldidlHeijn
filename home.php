@@ -27,7 +27,7 @@
 						?> <a href="user_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a> <?php
 					}
 				} else {
-					?> <a href="loginpage.php" class="btn btn-primary">Log in</a> <?php
+					?> <a href="loginpage.php" class="btn btn-primary">Inloggen/registeren</a> <?php
 				}
 			?>
         </div>
