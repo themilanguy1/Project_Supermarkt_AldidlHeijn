@@ -41,7 +41,7 @@
 					if (Order::displayInvoice($_SESSION['shopping_cart_inventory'])) {
 						?>
                         <form method="get">
-                            <input class="form-control" name="coupon_code" placeholder="Vul kortingscode in"
+                            <input class="form-control" name="coupon_code" placeholder="Vul kortingscode in (code = korting)"
                                    type="text">
                             <button type="submit" class="btn btn-primary">Activeren</button>
                         </form>

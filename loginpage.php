@@ -38,9 +38,7 @@
 
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
                     <br>
-                    <a href="register.php">
-                        <button class="btn btn-lg btn-primary btn-block" type="button">Registreren</button>
-                    </a>
+                    <a href="register.php" class="btn btn-lg btn-primary btn-block">Registreren</a>
                 </form>
             </div>
         </div>
