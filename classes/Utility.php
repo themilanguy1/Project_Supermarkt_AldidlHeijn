@@ -38,7 +38,26 @@ class Utility
         echo "<a href='?category='><button class='btn btn-success'>Alles <span class='badge badge-light'>" . $product_total . "</span></button></a> ";
     }
 
-    public static function getProductTotal()
+    /**
+     *  Creates select dropdown from categories.
+     */
+    public static function selectCategory()
+    {
+        $conn = self::pdoConnect();
+        $category_fetch = $conn->query("SELECT * FROM categorie GROUP BY categorie_naam")->fetchAll(PDO::FETCH_ASSOC);
+        ?> <select name="product_categorie"> <?php
+        foreach ($category_fetch as $row) {
+            ?>
+            <option value="<?= $row["categorie_id"] ?>"><?= $row["categorie_naam"] ?></option>
+            <?php
+        }
+        ?>
+    </select>
+        <?php
+    }
+
+    public
+    static function getProductTotal()
     {
         $conn = self::pdoConnect();
         $product_total = $conn->query("SELECT COUNT(product_naam) FROM producten")->fetchColumn();
@@ -46,17 +65,22 @@ class Utility
     }
 
     /**
+     * @param $table
+     *  string Table name.
+     * @param $id_column
+     *  string Id column name.
      * @return mixed
      *
-     *  Gets new user ID from database table gebruikers.
+     *  Gets new ID from database table gebruikers.
      */
-    public static function getNewUserId()
+    public
+    static function getNewId($table, $id_column)
     {
         $conn = self::pdoConnect();
-        $users = $conn->query("SELECT COUNT(gebruiker_id) FROM gebruikers")->fetchColumn();
+        $users = $conn->query("SELECT COUNT($id_column) FROM $table")->fetchColumn();
 
         if ($users >= 1) {
-            $new_id = $conn->query("SELECT MAX(gebruiker_id) + 1 FROM gebruikers")->fetchColumn();
+            $new_id = $conn->query("SELECT MAX($id_column) + 1 FROM $table")->fetchColumn();
         } else {
             // No users in table yet.
             $new_id = 1;
@@ -70,7 +94,8 @@ class Utility
      *
      * Encrypts passwords.
      */
-    public static function encryptPassword($pass)
+    public
+    static function encryptPassword($pass)
     {
         $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
         return $hashed_pass;
@@ -83,7 +108,8 @@ class Utility
      *
      * Verifies encrypted passwords.
      */
-    public static function verifyEncryptedPassword($pass, $hashed_pass)
+    public
+    static function verifyEncryptedPassword($pass, $hashed_pass)
     {
         if (password_verify($pass, $hashed_pass)) {
             return true;

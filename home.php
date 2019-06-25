@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" href="Style/Main.css">
+    <link rel="stylesheet" href="style/Main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
@@ -22,9 +22,9 @@
 				if (Session::loginStatus()) {
 					?> <a href="logout.php" class="btn btn-primary">Log uit</a> <?php
 					if (Session::adminStatus()) {
-						?> <a href="admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a> <?php
+						?> <a href="dashboard/admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a> <?php
 					} else {
-						?> <a href="user_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a> <?php
+						?> <a href="dashboard/user_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a> <?php
 					}
 				} else {
 					?> <a href="loginpage.php" class="btn btn-primary">Inloggen/registeren</a> <?php
@@ -61,16 +61,16 @@
 		<?php
 			if (isset($_GET['category']) && (!empty($_GET['category']))) {
 				// Only category filter.
-				Products::displayProducts(Products::fetchProducts($_GET['category']));
+				Products::displayProductStore(Products::fetchProducts($_GET['category']));
 			} elseif (isset($_GET['search']) && (!empty($_GET['search']))) {
 				// Only search filter.
-				Products::displayProducts(Products::fetchProducts(null, $_GET['search']));
+				Products::displayProductStore(Products::fetchProducts(null, $_GET['search']));
 			} elseif (isset($_GET['category']) && (!empty($_GET['category'])) && (isset($_GET['search']) && (!empty($_GET['search'])))) {
 				// Both category and search filter.
-				Products::displayProducts(Products::fetchProducts($_GET['category'], $_GET['search']));
+				Products::displayProductStore(Products::fetchProducts($_GET['category'], $_GET['search']));
 			} else {
 				// No filter.
-				Products::displayProducts(Products::fetchProducts());
+				Products::displayProductStore(Products::fetchProducts());
 			}
 		?>
     </div>

@@ -6,8 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bestellen</title>
-    <link rel="stylesheet" href="../Style/Main.css">
+    <link rel="stylesheet" href="../style/Main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
@@ -22,9 +21,9 @@
 			<?php
 				if (Session::loginStatus()) {
 					if (Session::adminStatus()) {
-						?> <a href="../admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a> <?php
+						?> <a href="../dashboard/admin_dashboard.php" class="btn btn-primary">Admin Dashboard</a> <?php
 					} else {
-						?> <a href="../user_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a> <?php
+						?> <a href="../dashboard/user_dashboard.php" class="btn btn-primary">Gebruiker Dashboard</a> <?php
 					}
 					?> <a href="../logout.php" class="btn btn-primary">Log uit</a> <?php
 				} else {

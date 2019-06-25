@@ -87,7 +87,7 @@ class User
         if (!User::doesEmailExist($this->email)) {
             if (!User::doesUserNameExist($this->user_name)) {
                 $conn = Utility::pdoConnect();
-                $new_id = Utility::getNewUserId();
+                $new_id = Utility::getNewId("gebruikers", "gebruiker_id");
                 $hashed_pass = Utility::encryptPassword($this->pass);
                 $register_admin_status = 0;
 
@@ -176,37 +176,33 @@ class User
     public static function displayUsers($user_data)
     {
         ?>
-        <div class="container">
-            <div class='col-md-12'>
-                <table class='table'>
-                    <thead class='thead-light'>
-                    <tr>
-                        <th scope='col'>id</th>
-                        <th scope='col'>naam</th>
-                        <th scope='col'>email</th>
-                        <th scope='col'>admin_status</th>
-                        <th scope='col'>wijzig</th>
-                        <th scope='col'>verwijder</th>
-                    </tr>
-                    <tbody>
-                    <?php foreach ($user_data as $row) : ?>
-                        <tr>
-                            <th scope='row'><?= $row['gebruiker_id'] ?></th>
-                            <td><?= $row['gebruiker_gebruikersnaam'] ?></td>
-                            <td><?= $row['gebruiker_email'] ?></td>
-                            <td><?= $row['gebruiker_admin_status'] ?></td>
-                            <td><a href="<?= "?edit_id=".$row['gebruiker_id'] ?>">
-                                    Wijzig
-                                </a></td>
-                            <td><a href="<?= "?del_id=".$row['gebruiker_id'] ?>">
-                                    Verwijderen
-                                </a></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <table class='table'>
+            <thead class='thead-light'>
+            <tr>
+                <th scope='col'>id</th>
+                <th scope='col'>naam</th>
+                <th scope='col'>email</th>
+                <th scope='col'>admin_status</th>
+                <th scope='col'>wijzig</th>
+                <th scope='col'>verwijder</th>
+            </tr>
+            <tbody>
+            <?php foreach ($user_data as $row) : ?>
+                <tr>
+                    <th scope='row'><?= $row['gebruiker_id'] ?></th>
+                    <td><?= $row['gebruiker_gebruikersnaam'] ?></td>
+                    <td><?= $row['gebruiker_email'] ?></td>
+                    <td><?= $row['gebruiker_admin_status'] ?></td>
+                    <td><a href="<?= "?user_edit_id=" . $row['gebruiker_id'] ?>">
+                            Wijzig
+                        </a></td>
+                    <td><a href="<?= "?user_del_id=" . $row['gebruiker_id'] ?>">
+                            Verwijderen
+                        </a></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
         <?php
     }
 

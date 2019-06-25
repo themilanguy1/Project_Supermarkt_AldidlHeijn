@@ -23,7 +23,13 @@ class Products
         return $data;
     }
 
-    public static function displayProducts($data)
+    /**
+     * @param $data
+     *  array Fetched products.
+     *
+     *  Displays products in store page.
+     */
+    public static function displayProductStore($data)
     {
         foreach ($data as $row) {
             ?>
@@ -62,6 +68,87 @@ class Products
             </div>
             <?php
         }
+    }
+
+    /**
+     * @param $data
+     *  array Fetched products.
+     *
+     *  Display list of products.
+     */
+    public static function displayProductList($data)
+    {
+        ?>
+        <table class='table'>
+            <thead class='thead-light'>
+            <tr>
+                <th scope='col'>naam</th>
+                <th scope='col'>categorie</th>
+                <th scope='col'>prijs</th>
+                <th scope='col'>wijzig</th>
+                <th scope='col'>verwijder</th>
+            </tr>
+            <tbody>
+            <?php foreach ($data as $row) : ?>
+                <tr>
+                    <td><?= $row['product_naam'] ?></td>
+                    <td><?= $row['categorie_naam'] ?></td>
+                    <td><?= $row['product_prijs'] ?></td>
+                    <td><a href="<?= "?product_edit_id=" . $row['product_id'] ?>">
+                            Wijzig
+                        </a></td>
+                    <td><a href="<?= "?product_del_id=" . $row['product_id'] ?>">
+                            Verwijderen
+                        </a></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php
+    }
+
+    /**
+     * @param $id
+     *  int Id.
+     * @param $name
+     *  string Name.
+     * @param $category
+     *  string Category.
+     * @param $image_link
+     *  string Image link.
+     * @param $price
+     *  int Price.
+     *
+     *  Adds product.
+     */
+    public static function addProduct($id, $name, $category, $image_link, $price)
+    {
+        $conn = Utility::pdoConnect();
+        $insert_sql = $conn->prepare("INSERT into producten (product_id, product_naam, categorie_id, 
+                                                product_afbeelding, product_prijs)
+                                                VALUES (?, ?, ?, ?, ?)");
+        $insert_sql->bindParam("1", $id);
+        $insert_sql->bindParam("2", $name);
+        $insert_sql->bindParam("3", $category);
+        $insert_sql->bindParam("4", $image_link);
+        $insert_sql->bindParam("5", $price);
+        $insert_sql->execute();
+
+        header("Location: ../admin_dashboard.php");
+    }
+
+    /**
+     * @param $product_id
+     *  int Product id.
+     *
+     *  Removes product.
+     */
+    public static function removeProduct($product_id)
+    {
+        $conn = Utility::pdoConnect();
+        $delete_query = $conn->prepare("DELETE FROM producten WHERE product_id = ?");
+        $delete_query->bindParam("1", $product_id);
+        $delete_query->execute();
     }
 
     /**
